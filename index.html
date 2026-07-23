@@ -719,7 +719,7 @@
       width: 100%;
       margin-top: 0;
       margin-bottom: 200px;
-      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 96px);
+      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px);
       overflow: hidden;
     }
 
@@ -747,7 +747,7 @@
     /* ── L3: PROJECT PAGE ── same priority flip as above. */
     .project-thumb-hero {
       width: 100%;
-      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 96px);
+      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px);
       overflow: hidden;
     }
 
@@ -782,7 +782,7 @@
     }
     @media (max-width: 1099px) {
       [id^="view-article-"] .project-thumb-hero {
-        height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 96px - 34px);
+        height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px - 34px);
       }
     }
     @media (min-width: 1100px) {
@@ -2278,7 +2278,7 @@
          within #hero, so that 200px naturally falls at the bottom. */
       .hero-image {
         width: 100%;
-        height: calc(100vh - var(--nav-height) - 96px);
+        height: calc(100vh - var(--nav-height) - 120px);
         overflow: hidden;
       }
       .hero-image img,
@@ -6297,6 +6297,14 @@
   <script>
     // ── LENIS SMOOTH SCROLL ──
     gsap.registerPlugin(ScrollTrigger);
+    // ScrollTrigger's own default resize handling has the same mobile
+    // toolbar-toggle problem as Lenis's autoResize (see below) — it
+    // refreshes (and can reposition pinned/scrubbed effects) on every
+    // window resize, including the height-only resize a phone's address
+    // bar / bottom bar show/hide triggers mid-scroll. This is GSAP's own
+    // built-in fix: only ignore resize-driven refreshes on touch devices,
+    // real layout changes (orientation) still refresh normally.
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
     const lenis = new Lenis({
       duration: 1.4,
