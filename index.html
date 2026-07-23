@@ -5116,10 +5116,64 @@
     // ── VIEW ROUTER ──
     let currentView = 'view-home';
     let stickyUpdate = null;
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      document.getElementById('view-home').classList.add('visible');
-      document.getElementById('navLogo').classList.add('is-home');
-    }));
+    let isSyncingRoute = false;
+
+    // ── URL ROUTING ── hash-based: a new path never hits the server, so
+    // GitHub Pages' static hosting (no rewrites) can't 404 on a deep link.
+    const SEGMENT_TO_VIEW = { '': 'view-home', work: 'view-work', services: 'view-services', about: 'view-about', studio: 'view-blog', contact: 'view-contact' };
+    const VIEW_TO_SEGMENT = { 'view-home': '', 'view-work': 'work', 'view-services': 'services', 'view-about': 'about', 'view-blog': 'studio', 'view-contact': 'contact' };
+    const SEGMENT_TO_L3_PREFIX = { work: 'view-project-', services: 'view-service-', studio: 'view-article-' };
+    const L3_PREFIX_TO_SEGMENT = { 'view-project-': 'work', 'view-service-': 'services', 'view-article-': 'studio' };
+
+    function currentFragment() {
+      return location.hash.replace(/^#\/?/, '');
+    }
+
+    function parseRoute(fragment) {
+      const parts = fragment.split('/').filter(Boolean);
+      const seg = parts[0] || '';
+      const slug = parts[1];
+      const view = Object.prototype.hasOwnProperty.call(SEGMENT_TO_VIEW, seg) ? SEGMENT_TO_VIEW[seg] : 'view-home';
+      if (slug && SEGMENT_TO_L3_PREFIX[seg]) return { view, l3: SEGMENT_TO_L3_PREFIX[seg] + slug };
+      return { view, l3: null };
+    }
+
+    function fragmentFor(viewId, l3Id) {
+      if (l3Id) {
+        const prefix = Object.keys(L3_PREFIX_TO_SEGMENT).find(p => l3Id.indexOf(p) === 0);
+        if (prefix) return L3_PREFIX_TO_SEGMENT[prefix] + '/' + l3Id.slice(prefix.length);
+      }
+      return VIEW_TO_SEGMENT[viewId] || '';
+    }
+
+    function pushRoute(viewId, l3Id) {
+      if (isSyncingRoute) return;
+      const fragment = fragmentFor(viewId, l3Id);
+      if (fragment === currentFragment()) return;
+      const url = fragment ? '#/' + fragment : location.pathname + location.search;
+      history.pushState(null, '', url);
+    }
+
+    function syncToRoute(route) {
+      isSyncingRoute = true;
+      if (route.view !== currentView) navigateTo(route.view);
+      if (route.l3) {
+        if (!activeL3 || activeL3.id !== route.l3) openL3(route.l3);
+      } else if (activeL3) {
+        closeL3({ skipHistory: true });
+      }
+      isSyncingRoute = false;
+    }
+
+    window.addEventListener('popstate', () => syncToRoute(parseRoute(currentFragment())));
+
+    const initialRoute = parseRoute(currentFragment());
+    if (initialRoute.view === 'view-home') {
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        document.getElementById('view-home').classList.add('visible');
+        document.getElementById('navLogo').classList.add('is-home');
+      }));
+    }
 
     function navigateTo(viewId) {
       // Any navigation into a real L1/L2 page closes an open L3 overlay
@@ -5130,10 +5184,12 @@
       // fully settled by the time the slide-down finishes revealing it,
       // rather than still visibly transitioning as it's uncovered.
       const hadActiveL3 = !!activeL3;
-      if (activeL3) closeL3();
+      const changingView = viewId !== currentView;
+      if (activeL3) closeL3({ skipHistory: changingView });
       const prev = document.getElementById(currentView);
       const next = document.getElementById(viewId);
       if (!next || viewId === currentView) return;
+      pushRoute(viewId, null);
       updateActiveNavLink(viewId);
       prev.classList.remove('visible');
       const swap = () => {
@@ -5253,7 +5309,8 @@
     function openL3(targetId) {
       const target = document.getElementById(targetId);
       if (!target || target === activeL3) return;
-      if (activeL3) closeL3();
+      if (activeL3) closeL3({ skipHistory: true });
+      pushRoute(currentView, targetId);
       // Nav state (logo underline, active section link) intentionally
       // stays exactly as it already reflects currentView — the background
       // page never actually changes while an L3 overlay is open, so the
@@ -5306,10 +5363,12 @@
       activeL3 = target;
     }
 
-    function closeL3() {
+    function closeL3(opts) {
       if (!activeL3) return;
+      const skipHistory = !!(opts && opts.skipHistory);
       const target = activeL3;
       activeL3 = null;
+      if (!skipHistory) pushRoute(currentView, null);
       // Removing l3-settled at the same time re-engages the transform, so
       // the close transition still has translateY(100%) to animate to
       // from a real starting value (transform:none and translateY(0)
@@ -5374,6 +5433,16 @@
       closeBtn.addEventListener('click', closeL3);
       header.appendChild(closeBtn);
     });
+
+    // ── APPLY INITIAL ROUTE (cold load / hard refresh on a deep link) ──
+    if (initialRoute.view !== 'view-home') {
+      isSyncingRoute = true;
+      navigateTo(initialRoute.view);
+      isSyncingRoute = false;
+    }
+    if (initialRoute.l3 && document.getElementById(initialRoute.l3)) {
+      openL3(initialRoute.l3);
+    }
 
     // ── NAV BOX INTERACTIONS ──
     (function () {
