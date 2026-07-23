@@ -719,7 +719,7 @@
       width: 100%;
       margin-top: 0;
       margin-bottom: 200px;
-      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 32px);
+      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 96px);
       overflow: hidden;
     }
 
@@ -747,7 +747,7 @@
     /* ── L3: PROJECT PAGE ── same priority flip as above. */
     .project-thumb-hero {
       width: 100%;
-      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 32px);
+      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 96px);
       overflow: hidden;
     }
 
@@ -782,7 +782,7 @@
     }
     @media (max-width: 1099px) {
       [id^="view-article-"] .project-thumb-hero {
-        height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 32px - 34px);
+        height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 96px - 34px);
       }
     }
     @media (min-width: 1100px) {
@@ -917,7 +917,7 @@
     }
 
     .service-details-card {
-      background: #CACACA;
+      background: #E3E3E3;
       color: #3A3A3A;
       border-radius: 8px;
       padding: 48px 36px;
@@ -935,33 +935,19 @@
       row-gap: 40px;
       column-gap: 32px;
     }
-    .case-study-stat-number {
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 1;
-      color: #3A3A3A;
-    }
-    .case-study-stat-copy {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #707070;
-      margin-top: 12px;
-    }
-    .case-study-stats {
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
-    }
     @media (min-width: 1100px) {
-      .case-study-grid { grid-template-columns: repeat(12, 1fr); column-gap: 0; }
+      .case-study-grid { grid-template-columns: repeat(12, 1fr); column-gap: 32px; }
       /* Explicit grid-row is required here: with only grid-column set,
          the auto-placement cursor advances in DOM order, and since the
-         thumb (col 9-12) comes before the stats (col 6-9) but the stats'
-         column range starts earlier, the cursor pushes the stats into
-         row 2 instead of packing them into row 1 alongside the thumb. */
-      .case-study-grid > .case-study-thumb { grid-column: 9 / 13; grid-row: 1; align-self: start; }
-      .case-study-grid > .case-study-stats { grid-column: 5 / 8; grid-row: 1; }
+         thumb comes before the detail card but the detail card's column
+         range starts earlier, the cursor would push it into row 2 instead
+         of packing it into row 1 alongside the thumb. */
+      .case-study-grid > .case-study-detail { grid-column: 1 / 8; grid-row: 1; }
+      .case-study-grid > .case-study-thumb { grid-column: 8 / 13; grid-row: 1; align-self: start; }
+      /* Same 4-facts-read-cleaner-in-2-columns reasoning as Project/Work
+         Details (see above) — this card lives in a narrower 7-column slot
+         instead of the full section width, so 3 columns would cramp it. */
+      .case-study-section .service-details-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     .faq-list-wrap { margin-top: 0; }
@@ -2292,7 +2278,7 @@
          within #hero, so that 200px naturally falls at the bottom. */
       .hero-image {
         width: 100%;
-        height: calc(100vh - var(--nav-height) - 32px);
+        height: calc(100vh - var(--nav-height) - 96px);
         overflow: hidden;
       }
       .hero-image img,
@@ -3264,14 +3250,30 @@
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
-            <div class="case-study-stats">
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">8+</div>
-                <p class="case-study-stat-copy">Brands and organizations partnered with across brand, video, and web projects.</p>
-              </div>
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">$15K+</div>
-                <p class="case-study-stat-copy">Direct revenue generated for a self-founded brand through retail partnerships and market activations.</p>
+            <div class="case-study-detail">
+              <div class="service-details-card">
+                <div class="service-details-grid">
+                  <div class="service-detail">
+                    <div class="service-detail-name">Service</div>
+                    <p class="service-detail-desc">Creative Direction</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Client</div>
+                    <p class="service-detail-desc">Add client name.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Description</div>
+                    <p class="service-detail-desc">Add a brief project description.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Need / Objective</div>
+                    <p class="service-detail-desc">Add the need or objective.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Outcome</div>
+                    <p class="service-detail-desc">Add the outcome.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -3419,14 +3421,30 @@
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
-            <div class="case-study-stats">
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">8+</div>
-                <p class="case-study-stat-copy">Brands and organizations partnered with across brand, video, and web projects.</p>
-              </div>
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">$15K+</div>
-                <p class="case-study-stat-copy">Direct revenue generated for a self-founded brand through retail partnerships and market activations.</p>
+            <div class="case-study-detail">
+              <div class="service-details-card">
+                <div class="service-details-grid">
+                  <div class="service-detail">
+                    <div class="service-detail-name">Service</div>
+                    <p class="service-detail-desc">Brand Development</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Client</div>
+                    <p class="service-detail-desc">Add client name.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Description</div>
+                    <p class="service-detail-desc">Add a brief project description.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Need / Objective</div>
+                    <p class="service-detail-desc">Add the need or objective.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Outcome</div>
+                    <p class="service-detail-desc">Add the outcome.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -3578,14 +3596,30 @@
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
-            <div class="case-study-stats">
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">8+</div>
-                <p class="case-study-stat-copy">Brands and organizations partnered with across brand, video, and web projects.</p>
-              </div>
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">$15K+</div>
-                <p class="case-study-stat-copy">Direct revenue generated for a self-founded brand through retail partnerships and market activations.</p>
+            <div class="case-study-detail">
+              <div class="service-details-card">
+                <div class="service-details-grid">
+                  <div class="service-detail">
+                    <div class="service-detail-name">Service</div>
+                    <p class="service-detail-desc">Web Design</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Client</div>
+                    <p class="service-detail-desc">Add client name.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Description</div>
+                    <p class="service-detail-desc">Add a brief project description.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Need / Objective</div>
+                    <p class="service-detail-desc">Add the need or objective.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Outcome</div>
+                    <p class="service-detail-desc">Add the outcome.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -3737,14 +3771,30 @@
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
-            <div class="case-study-stats">
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">8+</div>
-                <p class="case-study-stat-copy">Brands and organizations partnered with across brand, video, and web projects.</p>
-              </div>
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">$15K+</div>
-                <p class="case-study-stat-copy">Direct revenue generated for a self-founded brand through retail partnerships and market activations.</p>
+            <div class="case-study-detail">
+              <div class="service-details-card">
+                <div class="service-details-grid">
+                  <div class="service-detail">
+                    <div class="service-detail-name">Service</div>
+                    <p class="service-detail-desc">Content Production</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Client</div>
+                    <p class="service-detail-desc">Add client name.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Description</div>
+                    <p class="service-detail-desc">Add a brief project description.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Need / Objective</div>
+                    <p class="service-detail-desc">Add the need or objective.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Outcome</div>
+                    <p class="service-detail-desc">Add the outcome.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -3896,14 +3946,30 @@
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
-            <div class="case-study-stats">
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">8+</div>
-                <p class="case-study-stat-copy">Brands and organizations partnered with across brand, video, and web projects.</p>
-              </div>
-              <div class="case-study-stat">
-                <div class="case-study-stat-number">$15K+</div>
-                <p class="case-study-stat-copy">Direct revenue generated for a self-founded brand through retail partnerships and market activations.</p>
+            <div class="case-study-detail">
+              <div class="service-details-card">
+                <div class="service-details-grid">
+                  <div class="service-detail">
+                    <div class="service-detail-name">Service</div>
+                    <p class="service-detail-desc">Marketing Systems</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Client</div>
+                    <p class="service-detail-desc">Add client name.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Description</div>
+                    <p class="service-detail-desc">Add a brief project description.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Need / Objective</div>
+                    <p class="service-detail-desc">Add the need or objective.</p>
+                  </div>
+                  <div class="service-detail">
+                    <div class="service-detail-name">Outcome</div>
+                    <p class="service-detail-desc">Add the outcome.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -3959,7 +4025,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4031,7 +4097,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4111,7 +4177,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4192,7 +4258,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4271,7 +4337,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4346,7 +4412,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4428,7 +4494,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4507,7 +4573,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4584,7 +4650,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4654,7 +4720,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4727,7 +4793,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -4803,7 +4869,7 @@
       </div>
       <section class="l2-subsection project-details-section">
         <div class="l2-section-header">
-          <span class="section-label">Project Details</span>
+          <span class="section-label">Work Details</span>
           <span class="section-header-intro">The story behind the work.</span>
         </div>
         <div class="service-details-wrap">
@@ -5175,7 +5241,7 @@
       }));
     }
 
-    function navigateTo(viewId) {
+    function navigateTo(viewId, opts) {
       // Any navigation into a real L1/L2 page closes an open L3 overlay
       // first, so the background never changes underneath it unseen.
       // When that's the case, the background swap below happens instantly
@@ -5195,7 +5261,11 @@
       const swap = () => {
         prev.classList.remove('active');
         next.classList.add('active');
-        if (typeof lenis !== 'undefined') { lenis.scrollTo(0, { immediate: true }); } else { window.scrollTo(0, 0); }
+        // Switching the active view changes document scrollHeight, and
+        // autoResize is off (see LENIS SMOOTH SCROLL), so recompute Lenis's
+        // scroll limit for the new view here explicitly — safe to do right
+        // where scroll is already jumping to 0 rather than mid-momentum.
+        if (typeof lenis !== 'undefined') { lenis.resize(); lenis.scrollTo(0, { immediate: true }); } else { window.scrollTo(0, 0); }
         currentView = viewId;
         if (viewId === 'view-contact' && typeof window.resetContactForm === 'function') window.resetContactForm();
         if (stickyUpdate) stickyUpdate();
@@ -5234,7 +5304,7 @@
         }
         syncMenuBtnText();
       };
-      if (hadActiveL3) { swap(); } else { setTimeout(swap, 300); }
+      if (hadActiveL3 || (opts && opts.immediate)) { swap(); } else { setTimeout(swap, 300); }
     }
 
     // ── L3 OVERLAYS (project/service pages) ──
@@ -5344,6 +5414,7 @@
             duration: 1.4,
             easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smoothWheel: true,
+            autoResize: false,
           });
           l3Lenis.on('scroll', ScrollTrigger.update);
         }
@@ -5410,9 +5481,13 @@
       // global wheel/touch capture swallowing it (Lenis's documented
       // opt-out for nested scrollable containers).
       overlay.setAttribute('data-lenis-prevent', '');
-      // No entrance fade on L3 content — it should just be there the
-      // instant the panel finishes sliding up, not animate in on top of
-      // that motion.
+      // No entrance fade on L3 content opened in-app — it should just be
+      // there the instant the panel finishes sliding up, not animate in on
+      // top of that motion. The one exception is a cold-load landing
+      // directly on this overlay (see APPLY INITIAL ROUTE below), which
+      // gets a real entrance animation instead since there's no preceding
+      // page transition for the slide to play against.
+      if (overlay.id === initialRoute.l3) return;
       overlay.querySelectorAll('.l2-anim-title, .l2-anim-tagline, .l2-anim-body')
         .forEach(el => el.classList.add('anim-visible'));
     });
@@ -5437,11 +5512,16 @@
     // ── APPLY INITIAL ROUTE (cold load / hard refresh on a deep link) ──
     if (initialRoute.view !== 'view-home') {
       isSyncingRoute = true;
-      navigateTo(initialRoute.view);
+      navigateTo(initialRoute.view, { immediate: true });
       isSyncingRoute = false;
     }
     if (initialRoute.l3 && document.getElementById(initialRoute.l3)) {
       openL3(initialRoute.l3);
+      const initialL3El = document.getElementById(initialRoute.l3);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        initialL3El.querySelectorAll('.l2-anim-title, .l2-anim-tagline, .l2-anim-body')
+          .forEach(el => el.classList.add('anim-visible'));
+      }));
     }
 
     // ── NAV BOX INTERACTIONS ──
@@ -6231,6 +6311,7 @@
       duration: 1.4,
       easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      autoResize: false,
     });
 
     // Keep ScrollTrigger in sync with Lenis
@@ -6240,6 +6321,21 @@
       if (l3Lenis) l3Lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
+
+    // Mobile browsers resize the layout viewport (window.innerHeight) as
+    // their address bar / bottom bar show or hide while scrolling. Lenis's
+    // default autoResize treats that like a real reflow and recalculates
+    // scroll limits mid-scroll, which snaps the in-progress smooth scroll
+    // to an abrupt stop. Only resize Lenis when the width actually changes
+    // (a real layout change, e.g. orientation) — toolbar show/hide never
+    // changes that, only height.
+    let lastViewportWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (window.innerWidth === lastViewportWidth) return;
+      lastViewportWidth = window.innerWidth;
+      lenis.resize();
+      if (l3Lenis) l3Lenis.resize();
+    }, { passive: true });
 
     // ── IMAGE SCALE ON SCROLL ──
     // Scales the img *inside* each overflow:hidden wrapper so the frame stays
@@ -6579,6 +6675,11 @@
             answer.style.maxHeight = answer.scrollHeight + 'px';
           }
           list.classList.toggle('faq-list--has-open', !!list.querySelector('.faq-item.open'));
+          // Expanding/collapsing changes scroll height, and autoResize is
+          // off (see LENIS SMOOTH SCROLL) — recompute the relevant Lenis
+          // instance's limit once the max-height transition settles.
+          const scopedLenis = item.closest('.l3-overlay') ? l3Lenis : (typeof lenis !== 'undefined' ? lenis : null);
+          setTimeout(() => { if (scopedLenis) scopedLenis.resize(); }, 350);
         });
       });
     });
