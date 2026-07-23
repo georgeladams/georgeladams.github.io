@@ -5241,7 +5241,7 @@
       }));
     }
 
-    function navigateTo(viewId, opts) {
+    function navigateTo(viewId) {
       // Any navigation into a real L1/L2 page closes an open L3 overlay
       // first, so the background never changes underneath it unseen.
       // When that's the case, the background swap below happens instantly
@@ -5304,7 +5304,7 @@
         }
         syncMenuBtnText();
       };
-      if (hadActiveL3 || (opts && opts.immediate)) { swap(); } else { setTimeout(swap, 300); }
+      if (hadActiveL3) { swap(); } else { setTimeout(swap, 300); }
     }
 
     // ── L3 OVERLAYS (project/service pages) ──
@@ -5481,13 +5481,9 @@
       // global wheel/touch capture swallowing it (Lenis's documented
       // opt-out for nested scrollable containers).
       overlay.setAttribute('data-lenis-prevent', '');
-      // No entrance fade on L3 content opened in-app — it should just be
-      // there the instant the panel finishes sliding up, not animate in on
-      // top of that motion. The one exception is a cold-load landing
-      // directly on this overlay (see APPLY INITIAL ROUTE below), which
-      // gets a real entrance animation instead since there's no preceding
-      // page transition for the slide to play against.
-      if (overlay.id === initialRoute.l3) return;
+      // No entrance fade on L3 content — it should just be there the
+      // instant the panel finishes sliding up, not animate in on top of
+      // that motion.
       overlay.querySelectorAll('.l2-anim-title, .l2-anim-tagline, .l2-anim-body')
         .forEach(el => el.classList.add('anim-visible'));
     });
@@ -5512,16 +5508,11 @@
     // ── APPLY INITIAL ROUTE (cold load / hard refresh on a deep link) ──
     if (initialRoute.view !== 'view-home') {
       isSyncingRoute = true;
-      navigateTo(initialRoute.view, { immediate: true });
+      navigateTo(initialRoute.view);
       isSyncingRoute = false;
     }
     if (initialRoute.l3 && document.getElementById(initialRoute.l3)) {
       openL3(initialRoute.l3);
-      const initialL3El = document.getElementById(initialRoute.l3);
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        initialL3El.querySelectorAll('.l2-anim-title, .l2-anim-tagline, .l2-anim-body')
-          .forEach(el => el.classList.add('anim-visible'));
-      }));
     }
 
     // ── NAV BOX INTERACTIONS ──
