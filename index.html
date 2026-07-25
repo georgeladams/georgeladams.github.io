@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>George Adams</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -900,10 +900,9 @@
     }
     @media (min-width: 1100px) {
       .service-details-grid { grid-template-columns: repeat(3, 1fr); }
-      /* Project Details reuses this grid with only 4 facts (Client/Role/
-         Year/Deliverables) instead of 6 — 2 columns reads cleaner than
-         the 3-then-1 leftover row the default column count would leave. */
-      .project-details-section .service-details-grid { grid-template-columns: repeat(2, 1fr); }
+      /* Work Details reuses this grid with the same 6 facts (Client or
+         Context/Role/Year/Deliverables/Problem/Solution) as the default
+         3-column layout, so no column-count override is needed here. */
     }
 
     .service-detail-name {
@@ -944,9 +943,10 @@
          of packing it into row 1 alongside the thumb. */
       .case-study-grid > .case-study-detail { grid-column: 1 / 8; grid-row: 1; }
       .case-study-grid > .case-study-thumb { grid-column: 8 / 13; grid-row: 1; align-self: start; }
-      /* Same 4-facts-read-cleaner-in-2-columns reasoning as Project/Work
-         Details (see above) — this card lives in a narrower 7-column slot
-         instead of the full section width, so 3 columns would cramp it. */
+      /* 4 facts (Client/Deliverables/Problem/Solution) read cleaner in 2
+         columns than the 3-then-1 leftover row the default column count
+         would leave, especially in this narrower 7-column slot instead of
+         the full section width. */
       .case-study-section .service-details-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
@@ -1169,7 +1169,11 @@
     .footer-lower {
       margin-left: calc(-1 * var(--pad-mobile));
       margin-right: calc(-1 * var(--pad-mobile));
-      padding: 0 var(--pad-mobile) 40px;
+      /* env(safe-area-inset-bottom) grows to cover a translucent
+         overlaid mobile toolbar (e.g. Safari's compact bottom bar) so the
+         Connect button never ends up hidden behind it at max scroll —
+         resolves to 0 wherever that doesn't apply. */
+      padding: 0 var(--pad-mobile) calc(40px + env(safe-area-inset-bottom));
     }
 
     .footer-socials-row {
@@ -1545,7 +1549,15 @@
     }
     .image-lightbox.open { display: flex; }
 
-    .image-lightbox-frame { width: 100%; }
+    .image-lightbox-frame {
+      width: 100%;
+      /* Let the browser handle vertical gestures natively (e.g. an
+         accidental drag toward the close button) and only hijack
+         horizontal ones for the swipe — avoids fighting native scroll. */
+      touch-action: pan-y;
+      transition: transform 0.3s ease;
+    }
+    .image-lightbox-frame.dragging { transition: none; }
     .image-lightbox-img {
       display: block;
       width: 100%;
@@ -2246,7 +2258,7 @@
     /* Side padding matches .section-body so the Connect footer's content
        lines up with the form/body above it. */
     .contact-footer {
-      padding: 120px var(--pad-mobile) 64px;
+      padding: 120px var(--pad-mobile) calc(64px + env(safe-area-inset-bottom));
     }
 
     @media (min-width: 768px) {
@@ -3020,7 +3032,7 @@
             <video class="about-image-mobile" src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
             <video class="about-image-desktop" src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
           </div>
-          <p class="offer-text about-l2-bio">My background spans media production, brand development, campaign strategy, and web design. Through his multidisciplinary approach, combining storytelling, design, and systems thinking, he focuses on building meaningful connections that drive impact and consistency across every touchpoint.</p>
+          <p class="offer-text about-l2-bio">My background spans media production, brand development, campaign strategy, and web design. Through my multidisciplinary approach, combining storytelling, design, and systems thinking, I focus on building meaningful connections that drive impact and consistency across every touchpoint.</p>
           <div class="offer-attribution">
             <img class="offer-avatar" src="website-media/media-sitewide/sitewide-avatar.jpg" alt="George Adams" onerror="this.style.display='none'" />
             <div>
@@ -3254,24 +3266,20 @@
               <div class="service-details-card">
                 <div class="service-details-grid">
                   <div class="service-detail">
-                    <div class="service-detail-name">Service</div>
-                    <p class="service-detail-desc">Creative Direction</p>
-                  </div>
-                  <div class="service-detail">
                     <div class="service-detail-name">Client</div>
                     <p class="service-detail-desc">Add client name.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Description</div>
-                    <p class="service-detail-desc">Add a brief project description.</p>
+                    <div class="service-detail-name">Deliverables</div>
+                    <p class="service-detail-desc">Add key deliverables.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Need / Objective</div>
-                    <p class="service-detail-desc">Add the need or objective.</p>
+                    <div class="service-detail-name">Problem</div>
+                    <p class="service-detail-desc">Add the problem.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Outcome</div>
-                    <p class="service-detail-desc">Add the outcome.</p>
+                    <div class="service-detail-name">Solution</div>
+                    <p class="service-detail-desc">Add the solution.</p>
                   </div>
                 </div>
               </div>
@@ -3425,24 +3433,20 @@
               <div class="service-details-card">
                 <div class="service-details-grid">
                   <div class="service-detail">
-                    <div class="service-detail-name">Service</div>
-                    <p class="service-detail-desc">Brand Development</p>
-                  </div>
-                  <div class="service-detail">
                     <div class="service-detail-name">Client</div>
                     <p class="service-detail-desc">Add client name.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Description</div>
-                    <p class="service-detail-desc">Add a brief project description.</p>
+                    <div class="service-detail-name">Deliverables</div>
+                    <p class="service-detail-desc">Add key deliverables.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Need / Objective</div>
-                    <p class="service-detail-desc">Add the need or objective.</p>
+                    <div class="service-detail-name">Problem</div>
+                    <p class="service-detail-desc">Add the problem.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Outcome</div>
-                    <p class="service-detail-desc">Add the outcome.</p>
+                    <div class="service-detail-name">Solution</div>
+                    <p class="service-detail-desc">Add the solution.</p>
                   </div>
                 </div>
               </div>
@@ -3600,24 +3604,20 @@
               <div class="service-details-card">
                 <div class="service-details-grid">
                   <div class="service-detail">
-                    <div class="service-detail-name">Service</div>
-                    <p class="service-detail-desc">Web Design</p>
-                  </div>
-                  <div class="service-detail">
                     <div class="service-detail-name">Client</div>
                     <p class="service-detail-desc">Add client name.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Description</div>
-                    <p class="service-detail-desc">Add a brief project description.</p>
+                    <div class="service-detail-name">Deliverables</div>
+                    <p class="service-detail-desc">Add key deliverables.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Need / Objective</div>
-                    <p class="service-detail-desc">Add the need or objective.</p>
+                    <div class="service-detail-name">Problem</div>
+                    <p class="service-detail-desc">Add the problem.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Outcome</div>
-                    <p class="service-detail-desc">Add the outcome.</p>
+                    <div class="service-detail-name">Solution</div>
+                    <p class="service-detail-desc">Add the solution.</p>
                   </div>
                 </div>
               </div>
@@ -3775,24 +3775,20 @@
               <div class="service-details-card">
                 <div class="service-details-grid">
                   <div class="service-detail">
-                    <div class="service-detail-name">Service</div>
-                    <p class="service-detail-desc">Content Production</p>
-                  </div>
-                  <div class="service-detail">
                     <div class="service-detail-name">Client</div>
                     <p class="service-detail-desc">Add client name.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Description</div>
-                    <p class="service-detail-desc">Add a brief project description.</p>
+                    <div class="service-detail-name">Deliverables</div>
+                    <p class="service-detail-desc">Add key deliverables.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Need / Objective</div>
-                    <p class="service-detail-desc">Add the need or objective.</p>
+                    <div class="service-detail-name">Problem</div>
+                    <p class="service-detail-desc">Add the problem.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Outcome</div>
-                    <p class="service-detail-desc">Add the outcome.</p>
+                    <div class="service-detail-name">Solution</div>
+                    <p class="service-detail-desc">Add the solution.</p>
                   </div>
                 </div>
               </div>
@@ -3950,24 +3946,20 @@
               <div class="service-details-card">
                 <div class="service-details-grid">
                   <div class="service-detail">
-                    <div class="service-detail-name">Service</div>
-                    <p class="service-detail-desc">Marketing Systems</p>
-                  </div>
-                  <div class="service-detail">
                     <div class="service-detail-name">Client</div>
                     <p class="service-detail-desc">Add client name.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Description</div>
-                    <p class="service-detail-desc">Add a brief project description.</p>
+                    <div class="service-detail-name">Deliverables</div>
+                    <p class="service-detail-desc">Add key deliverables.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Need / Objective</div>
-                    <p class="service-detail-desc">Add the need or objective.</p>
+                    <div class="service-detail-name">Problem</div>
+                    <p class="service-detail-desc">Add the problem.</p>
                   </div>
                   <div class="service-detail">
-                    <div class="service-detail-name">Outcome</div>
-                    <p class="service-detail-desc">Add the outcome.</p>
+                    <div class="service-detail-name">Solution</div>
+                    <p class="service-detail-desc">Add the solution.</p>
                   </div>
                 </div>
               </div>
@@ -4033,19 +4025,27 @@
             <div class="service-details-grid">
               <div class="service-detail">
                 <div class="service-detail-name">Client</div>
-                <p class="service-detail-desc">Add client name.</p>
+                <p class="service-detail-desc">UMass Brotherly Union (UBU)</p>
               </div>
               <div class="service-detail">
                 <div class="service-detail-name">Role</div>
-                <p class="service-detail-desc">Add your role on this project.</p>
+                <p class="service-detail-desc">Creative Director &amp; Photographer — second (and, to date, final) project with UBU</p>
               </div>
               <div class="service-detail">
                 <div class="service-detail-name">Year</div>
-                <p class="service-detail-desc">Add project year.</p>
+                <p class="service-detail-desc">2025</p>
               </div>
               <div class="service-detail">
                 <div class="service-detail-name">Deliverables</div>
-                <p class="service-detail-desc">Add key deliverables.</p>
+                <p class="service-detail-desc">A full portrait series of UBU's Executive Board — individual and positional group portraits, plus a 14-person full E-board group photo.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">For their Black History Month campaign, UBU needed portraiture that did more than document who was on the E-Board — they needed images that asserted it. The work had to visually communicate the org's leadership structure, discipline, and presence on campus, and hold its own alongside UBU's wider slate of BHM programming and advocacy efforts.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Working from a Time Magazine editorial reference point, I built the series around natural window light, positioning each subject carefully to hold that clean, directional editorial look without any artificial lighting rig. Portraits were shot individually, then grouped by E-board position, and finally as a full 14-person group — giving the set a built-in structure that doubled as a visual map of the organization's leadership. Creative direction carried through post-production too, keeping the full run cohesive. Posted to Instagram, the series collectively pulled 60K+ views across the collaborative posts.</p>
               </div>
             </div>
           </div>
@@ -4118,6 +4118,14 @@
               <div class="service-detail">
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
               </div>
             </div>
           </div>
@@ -4198,6 +4206,14 @@
               <div class="service-detail">
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
               </div>
             </div>
           </div>
@@ -4280,6 +4296,14 @@
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
               </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -4359,6 +4383,14 @@
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
               </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -4419,8 +4451,8 @@
           <div class="service-details-card">
             <div class="service-details-grid">
               <div class="service-detail">
-                <div class="service-detail-name">Client</div>
-                <p class="service-detail-desc">Add client name.</p>
+                <div class="service-detail-name">Context</div>
+                <p class="service-detail-desc">Add context.</p>
               </div>
               <div class="service-detail">
                 <div class="service-detail-name">Role</div>
@@ -4433,6 +4465,14 @@
               <div class="service-detail">
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
               </div>
             </div>
           </div>
@@ -4501,8 +4541,8 @@
           <div class="service-details-card">
             <div class="service-details-grid">
               <div class="service-detail">
-                <div class="service-detail-name">Client</div>
-                <p class="service-detail-desc">Add client name.</p>
+                <div class="service-detail-name">Context</div>
+                <p class="service-detail-desc">Add context.</p>
               </div>
               <div class="service-detail">
                 <div class="service-detail-name">Role</div>
@@ -4515,6 +4555,14 @@
               <div class="service-detail">
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
               </div>
             </div>
           </div>
@@ -4595,6 +4643,14 @@
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
               </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -4672,6 +4728,14 @@
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
               </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -4713,8 +4777,13 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" alt="Portraits of Joy" />
+            <video src="website-media/media-work/work-joy/work-joy-5.mp4" autoplay muted loop playsinline></video>
           </div>
+        </div>
+        <div class="project-detail-grid">
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" alt="Portraits of Joy" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-2.jpg" alt="Portraits of Joy" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-3.jpg" alt="Portraits of Joy" /></div>
         </div>
       </div>
       </div>
@@ -4741,6 +4810,14 @@
               <div class="service-detail">
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
               </div>
             </div>
           </div>
@@ -4814,6 +4891,14 @@
               <div class="service-detail">
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
               </div>
             </div>
           </div>
@@ -4890,6 +4975,14 @@
               <div class="service-detail">
                 <div class="service-detail-name">Deliverables</div>
                 <p class="service-detail-desc">Add key deliverables.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Problem</div>
+                <p class="service-detail-desc">Add the problem.</p>
+              </div>
+              <div class="service-detail">
+                <div class="service-detail-name">Solution</div>
+                <p class="service-detail-desc">Add the solution.</p>
               </div>
             </div>
           </div>
@@ -5222,6 +5315,12 @@
 
     function syncToRoute(route) {
       isSyncingRoute = true;
+      // A browser back/forward gesture can fire while the off-canvas menu
+      // is open (it doesn't push its own history entry) — without this the
+      // menu stayed visually open over a page that had already navigated
+      // out from under it, and its scroll lock (body overflow, lenis.stop)
+      // never got released since nothing else was left to release it.
+      if (offcanvas.classList.contains('open')) closeOffcanvas({ immediate: true });
       if (route.view !== currentView) navigateTo(route.view);
       if (route.l3) {
         if (!activeL3 || activeL3.id !== route.l3) openL3(route.l3);
@@ -5232,6 +5331,25 @@
     }
 
     window.addEventListener('popstate', () => syncToRoute(parseRoute(currentFragment())));
+
+    // ── SCROLL-LOCK WATCHDOG ── openL3/openOffcanvas/etc. lock body scroll
+    // (overflow:hidden + lenis.stop()) in pairs with their own close
+    // counterpart, but a backgrounded tab can have its timers throttled or
+    // frozen mid-transition (see the setTimeout-delayed unlocks above), so
+    // an interrupted-at-the-wrong-moment close can leave the lock stuck on
+    // resume with nothing visibly open to explain it. Re-check whenever the
+    // tab becomes visible again and self-heal if every overlay that could
+    // legitimately hold the lock is actually closed.
+    function ensureScrollUnlocked() {
+      if (activeL3 || offcanvas.classList.contains('open')) return;
+      const lb = document.getElementById('imageLightbox');
+      if (lb && lb.classList.contains('open')) return;
+      if (document.body.style.overflow === 'hidden') document.body.style.overflow = '';
+      if (typeof lenis !== 'undefined') lenis.start();
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') ensureScrollUnlocked();
+    });
 
     const initialRoute = parseRoute(currentFragment());
     if (initialRoute.view === 'view-home') {
@@ -5591,33 +5709,49 @@
       syncMenuBtnText();
     }
 
-    function closeOffcanvas() {
+    // `immediate` is used whenever closing the menu is paired with a
+    // navigateTo() call (menu items, logo, footer CTA): the masked header
+    // is a clone of the page being *left*, so once we're navigating away
+    // it's permanently stale — unblurring it back into view would just
+    // show the old page's title for 600ms before it's swapped for the new
+    // one. Dropping it immediately instead lets navigateTo's own fade
+    // handle the transition, so the new page's header/body fade in against
+    // empty space rather than an old header flashing then abruptly
+    // switching.
+    function closeOffcanvas(opts) {
+      const immediate = !!(opts && opts.immediate);
       offcanvas.classList.remove('open');
       document.body.classList.remove('menu-text-blur');
-      // Unblur the masked header's text in step with the nav, then only
-      // remove the mask once both it and #app have actually finished
-      // unblurring (same 0.6s) — removing it any sooner swaps in a still-
-      // blurred sliver of the real header before it's caught up.
-      document.querySelectorAll('.header-blur-mask--blurred').forEach(clone => {
-        clone.classList.remove('header-blur-mask--blurred');
-      });
+      if (immediate) {
+        unmaskVisibleHeaders();
+      } else {
+        // Unblur the masked header's text in step with the nav, then only
+        // remove the mask once both it and #app have actually finished
+        // unblurring (same 0.6s) — removing it any sooner swaps in a still-
+        // blurred sliver of the real header before it's caught up.
+        document.querySelectorAll('.header-blur-mask--blurred').forEach(clone => {
+          clone.classList.remove('header-blur-mask--blurred');
+        });
+      }
       if (!activeL3) {
         appEl.classList.remove('l3-blurred');
-        // Guard against a rapid close-then-reopen: if the menu (or an L3)
-        // became active again before this fires, its own fresh masks are
-        // already in place — don't wipe them out.
-        setTimeout(() => {
-          if (!offcanvas.classList.contains('open') && !activeL3) unmaskVisibleHeaders();
-        }, 600);
+        if (!immediate) {
+          // Guard against a rapid close-then-reopen: if the menu (or an L3)
+          // became active again before this fires, its own fresh masks are
+          // already in place — don't wipe them out.
+          setTimeout(() => {
+            if (!offcanvas.classList.contains('open') && !activeL3) unmaskVisibleHeaders();
+          }, 600);
+        }
         if (typeof lenis !== 'undefined') lenis.start();
         document.body.style.overflow = '';
       }
       syncMenuBtnText();
     }
 
-    document.getElementById('offcanvasClose').addEventListener('click', closeOffcanvas);
+    document.getElementById('offcanvasClose').addEventListener('click', () => closeOffcanvas());
     document.getElementById('offcanvasLogo').addEventListener('click', () => {
-      closeOffcanvas();
+      closeOffcanvas({ immediate: true });
       navigateTo('view-home');
     });
 
@@ -5651,7 +5785,7 @@
 
     document.querySelectorAll('.offcanvas-section-row[data-target]').forEach(row => {
       row.addEventListener('click', () => {
-        closeOffcanvas();
+        closeOffcanvas({ immediate: true });
         navigateTo(row.dataset.target);
       });
     });
@@ -5659,7 +5793,7 @@
     // Offcanvas CTA → navigate to the Connect page
     document.querySelector('.offcanvas-footer .cta-btn').addEventListener('click', e => {
       e.preventDefault();
-      closeOffcanvas();
+      closeOffcanvas({ immediate: true });
       navigateTo('view-contact');
     });
 
@@ -5853,6 +5987,38 @@
       syncMenuBtnText();
     }
 
+    // A mobile browser's address/tab bars can shrink or grow over the
+    // course of this glide, changing how much is actually scrollable —
+    // Lenis's cached limit (see LENIS SMOOTH SCROLL) can be stale by the
+    // time the animation finishes, landing short of the real bottom with
+    // the footer's Connect button still tucked behind the bottom bar. Once
+    // the glide completes, resync the limit and top off the scroll if it's
+    // still short, so this always actually lands at the true bottom.
+    function scrollHomeToBottom() {
+      if (typeof lenis === 'undefined') {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        return;
+      }
+      lenis.resize();
+      const target = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      lenis.scrollTo(target, {
+        // A longer duration and gentler ease-out than Lenis's default wheel
+        // feel, so this jump reads as a deliberate, smooth glide rather
+        // than a quick scroll.
+        immediate: false,
+        duration: 2,
+        easing: t => 1 - Math.pow(1 - t, 4),
+        onComplete: () => {
+          lenis.resize();
+          const trueMax = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+          if (trueMax - window.scrollY > 4) {
+            lenis.scrollTo(trueMax, { immediate: true });
+          }
+          updateMenuBtn();
+        },
+      });
+    }
+
     menuBtn.addEventListener('click', () => {
       if (offcanvas.classList.contains('open')) {
         closeOffcanvas();
@@ -5869,18 +6035,14 @@
         return;
       }
       const atBottom = (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 80;
-      const target = atBottom ? 0 : document.body.scrollHeight;
-      if (typeof lenis !== 'undefined') {
-        // A longer duration and gentler ease-out than Lenis's default wheel
-        // feel, so this jump reads as a deliberate, smooth glide rather
-        // than a quick scroll.
-        lenis.scrollTo(target, {
-          immediate: false,
-          duration: 2,
-          easing: t => 1 - Math.pow(1 - t, 4),
-        });
+      if (atBottom) {
+        if (typeof lenis !== 'undefined') {
+          lenis.scrollTo(0, { immediate: false, duration: 2, easing: t => 1 - Math.pow(1 - t, 4) });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       } else {
-        window.scrollTo({ top: target, behavior: 'smooth' });
+        scrollHomeToBottom();
       }
     });
 
@@ -6163,9 +6325,14 @@
     (function () {
       const lightbox = document.getElementById('imageLightbox');
       const lightboxImg = lightbox.querySelector('.image-lightbox-img');
+      const frame = lightbox.querySelector('.image-lightbox-frame');
       const navEl = document.getElementById('nav');
       let images = [];
       let index = 0;
+
+      function setFrameOffset(x) {
+        frame.style.transform = x ? `translateX(${x}px)` : '';
+      }
 
       function show() {
         const img = images[index];
@@ -6186,6 +6353,8 @@
         )];
         index = Math.max(0, images.indexOf(clickedImg));
         show();
+        frame.classList.remove('dragging');
+        setFrameOffset(0);
         lightbox.classList.add('open');
         navEl.classList.add('lightbox-blurred');
         appEl.classList.add('lightbox-blurred');
@@ -6198,6 +6367,68 @@
         appEl.classList.remove('lightbox-blurred');
         if (activeL3) activeL3.classList.remove('lightbox-blurred');
       }
+
+      // ── TOUCH DRAG / SWIPE ── follows the finger 1:1 while dragging (no
+      // native transition), then either flings the current image the rest
+      // of the way off-screen and slides the next one in from the same
+      // direction, or springs back to center if the drag didn't clear the
+      // threshold — the same feel as a native photo viewer.
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let dragDeltaX = 0;
+      let dragAxis = null;
+      let dragging = false;
+
+      frame.addEventListener('touchstart', e => {
+        if (e.touches.length !== 1 || images.length < 1) return;
+        dragStartX = e.touches[0].clientX;
+        dragStartY = e.touches[0].clientY;
+        dragDeltaX = 0;
+        dragAxis = null;
+        dragging = true;
+        frame.classList.add('dragging');
+      }, { passive: true });
+
+      frame.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        const touch = e.touches[0];
+        const dx = touch.clientX - dragStartX;
+        const dy = touch.clientY - dragStartY;
+        if (dragAxis === null) {
+          if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+          dragAxis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+        }
+        if (dragAxis !== 'x') return;
+        e.preventDefault();
+        dragDeltaX = dx;
+        setFrameOffset(dragDeltaX);
+      }, { passive: false });
+
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        frame.classList.remove('dragging');
+        const threshold = Math.min(120, frame.offsetWidth * 0.2);
+        if (dragAxis === 'x' && images.length > 1 && Math.abs(dragDeltaX) > threshold) {
+          const dir = dragDeltaX < 0 ? 1 : -1;
+          setFrameOffset(dragDeltaX < 0 ? -frame.offsetWidth : frame.offsetWidth);
+          setTimeout(() => {
+            step(dir);
+            frame.classList.add('dragging');
+            setFrameOffset(dir > 0 ? frame.offsetWidth : -frame.offsetWidth);
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              frame.classList.remove('dragging');
+              setFrameOffset(0);
+            }));
+          }, 220);
+        } else {
+          setFrameOffset(0);
+        }
+        dragAxis = null;
+      }
+
+      frame.addEventListener('touchend', endDrag, { passive: true });
+      frame.addEventListener('touchcancel', endDrag, { passive: true });
 
       document.addEventListener('click', e => {
         const img = e.target.closest(
@@ -6325,16 +6556,44 @@
     // their address bar / bottom bar show or hide while scrolling. Lenis's
     // default autoResize treats that like a real reflow and recalculates
     // scroll limits mid-scroll, which snaps the in-progress smooth scroll
-    // to an abrupt stop. Only resize Lenis when the width actually changes
-    // (a real layout change, e.g. orientation) — toolbar show/hide never
-    // changes that, only height.
+    // to an abrupt stop the instant the bars finish animating. A width
+    // change (orientation, real layout change) is safe to resize for
+    // immediately. A height-only change (toolbar show/hide) is deferred
+    // until both the resize events have settled AND nothing is actively
+    // scrolling — resizing mid-momentum is exactly what produces the
+    // abrupt stop, but skipping it forever (the old fix) left Lenis's
+    // limit stale, understating how far down the page actually goes once
+    // a toolbar collapses and undershooting on scroll-to-bottom.
     let lastViewportWidth = window.innerWidth;
-    window.addEventListener('resize', () => {
-      if (window.innerWidth === lastViewportWidth) return;
-      lastViewportWidth = window.innerWidth;
+    let heightResizeTimer = null;
+    function resizeLenisNow() {
       lenis.resize();
       if (l3Lenis) l3Lenis.resize();
+    }
+    function scheduleHeightResize() {
+      clearTimeout(heightResizeTimer);
+      heightResizeTimer = setTimeout(() => {
+        if (lenis.isScrolling || (l3Lenis && l3Lenis.isScrolling)) {
+          scheduleHeightResize();
+          return;
+        }
+        resizeLenisNow();
+      }, 220);
+    }
+    window.addEventListener('resize', () => {
+      if (window.innerWidth !== lastViewportWidth) {
+        lastViewportWidth = window.innerWidth;
+        resizeLenisNow();
+        return;
+      }
+      scheduleHeightResize();
     }, { passive: true });
+    // visualViewport fires more reliably than window 'resize' for pure
+    // toolbar show/hide on some mobile browsers — listen to both; the
+    // debounce above coalesces duplicate firings.
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', scheduleHeightResize, { passive: true });
+    }
 
     // ── IMAGE SCALE ON SCROLL ──
     // Scales the img *inside* each overflow:hidden wrapper so the frame stays
