@@ -2373,7 +2373,7 @@
       <!-- HERO -->
       <section id="hero">
         <div class="hero-image">
-          <video src="website-media/media-homepage/homepage-hero-1.mp4" autoplay muted loop playsinline></video>
+          <video data-src="website-media/media-homepage/homepage-hero.mp4" data-src-mobile="website-media/media-homepage/homepage-hero-mobile.mp4" data-poster-mobile="website-media/media-homepage/homepage-hero-mobile-poster.jpg" poster="website-media/media-homepage/homepage-hero-poster.jpg" autoplay muted loop playsinline></video>
         </div>
       </section>
 
@@ -2575,8 +2575,8 @@
           <div class="about-grid">
             <div></div>
             <div class="about-image fade-left">
-              <video class="about-image-mobile" src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
-              <video class="about-image-desktop" src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
+              <video class="about-image-mobile" data-src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
+              <video class="about-image-desktop" data-src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
             </div>
           </div>
         </div>
@@ -3029,8 +3029,8 @@
       <div class="section-body l2-anim-body">
         <div class="about-l2-content">
           <div class="about-image">
-            <video class="about-image-mobile" src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
-            <video class="about-image-desktop" src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
+            <video class="about-image-mobile" data-src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
+            <video class="about-image-desktop" data-src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
           </div>
           <p class="offer-text about-l2-bio">My background spans media production, brand development, campaign strategy, and web design. Through my multidisciplinary approach, combining storytelling, design, and systems thinking, I focus on building meaningful connections that drive impact and consistency across every touchpoint.</p>
           <div class="offer-attribution">
@@ -4168,7 +4168,7 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <video src="website-media/media-work/work-sga/work-sga-1.mp4" autoplay muted loop playsinline></video>
+            <video data-src="website-media/media-work/work-sga/work-sga-1.mp4" autoplay muted loop playsinline></video>
           </div>
         </div>
         <div class="project-detail-grid">
@@ -4692,11 +4692,11 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <video src="website-media/media-work/work-ugc/work-ugc-3.mp4" autoplay muted loop playsinline></video>
+            <video data-src="website-media/media-work/work-ugc/work-ugc-3.mp4" autoplay muted loop playsinline></video>
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img project-detail-video"><video src="website-media/media-work/work-ugc/work-ugc-2.mp4" autoplay muted loop playsinline></video></div>
+          <div class="project-detail-img project-detail-video"><video data-src="website-media/media-work/work-ugc/work-ugc-2.mp4" autoplay muted loop playsinline></video></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-4.jpg" alt="UGC" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-5.jpg" alt="UGC" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-6.jpg" alt="UGC" /></div>
@@ -4777,7 +4777,7 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <video src="website-media/media-work/work-joy/work-joy-5.mp4" autoplay muted loop playsinline></video>
+            <video data-src="website-media/media-work/work-joy/work-joy-5.mp4" autoplay muted loop playsinline></video>
           </div>
         </div>
         <div class="project-detail-grid">
@@ -4864,7 +4864,8 @@
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img project-detail-video"><video src="website-media/media-work/work-play-date/work-play-date-2.mp4" autoplay muted loop playsinline></video></div>
+          <div class="project-detail-img project-detail-video"><video data-src="website-media/media-work/work-play-date/work-play-date-2.mp4" autoplay muted loop playsinline></video></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-3.jpg" alt="Play Date" /></div>
         </div>
       </div>
       </div>
@@ -6308,6 +6309,46 @@
         this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 300);
     });
+
+    // ── LAZY VIDEO LOADING ── videos only fetch once their element is
+    // actually visible — a view/L3 overlay is open, or it's scrolled into
+    // view on the homepage's single long-scrolling page. Without this,
+    // every video sitewide (hero, about, every project's video) downloads
+    // on first load regardless of whether it's ever seen, since autoplay
+    // starts fetching the moment an element exists in the DOM — and every
+    // L1/L2/L3 view is mounted in the DOM from the start here, just hidden.
+    // Picks a mobile-specific src/poster when present (data-src-mobile /
+    // data-poster-mobile) and falls back to the desktop one otherwise.
+    (function () {
+      const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
+
+      function activate(video) {
+        const wantSrc = (isMobile() && video.dataset.srcMobile) ? video.dataset.srcMobile : video.dataset.src;
+        if (!wantSrc || video._activeSrc === wantSrc) return;
+        const poster = (isMobile() && video.dataset.posterMobile) ? video.dataset.posterMobile : null;
+        if (poster) video.poster = poster;
+        video.src = wantSrc;
+        video._activeSrc = wantSrc;
+        video.load();
+      }
+
+      function deactivate(video) {
+        if (!video._activeSrc) return;
+        video.pause();
+        video.removeAttribute('src');
+        video._activeSrc = null;
+        video.load();
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) activate(entry.target);
+          else deactivate(entry.target);
+        });
+      }, { rootMargin: '200px' });
+
+      document.querySelectorAll('video[data-src]').forEach(v => observer.observe(v));
+    })();
 
     // ── SITEWIDE VIDEO CLICK-TO-PAUSE ── no native controls anywhere; a
     // click anywhere on any <video> just toggles play/pause.
