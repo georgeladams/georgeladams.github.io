@@ -2283,14 +2283,15 @@
       #hero {
         flex-direction: column;
         padding-bottom: 0;
-        min-height: calc(100vh - var(--nav-height));
+        min-height: 0;
       }
-      /* Image height = viewport minus the nav above it minus the 200px
-         gap reserved below before the offer statement — top-aligned
-         within #hero, so that 200px naturally falls at the bottom. */
+      /* Fixed 4:5 (width:height) ratio on mobile instead of stretching to
+         fill the viewport — #hero no longer forces full-viewport height, so
+         it collapses to fit this; #offer's own 200px top padding (below)
+         provides the gap before the offer statement. */
       .hero-image {
         width: 100%;
-        height: calc(100vh - var(--nav-height) - 120px);
+        aspect-ratio: 4 / 5;
         overflow: hidden;
       }
       .hero-image img,
