@@ -20,6 +20,18 @@
     html { scrollbar-gutter: stable; }
 
     img { border-radius: 4px; }
+
+    /* Every lazy image fades in on its own, tied to its actual load event
+       (see IMAGE FADE-IN ON LOAD in the main script) — independent of
+       whatever wrapper-level scroll-entrance animation (fade-up/fade-left)
+       it also happens to sit inside. Without this, the wrapper's opacity
+       transition still runs fine, but the image bitmap itself just snaps
+       in unanimated the instant it decodes, which reads as an abrupt
+       flicker rather than a fade, especially now that width/height
+       attributes reserve full-size boxes immediately instead of the
+       near-invisible collapsed boxes that used to mask this. */
+    img[loading="lazy"] { opacity: 0; transition: opacity 0.4s ease; }
+    img[loading="lazy"].img-loaded { opacity: 1; }
     /* No native controls anywhere on the site — the only interaction is
        click-to-toggle play/pause (see the sitewide click handler in the
        main script), so a pointer cursor is the only affordance needed. */
@@ -791,6 +803,7 @@
     .yt-embed {
       position: relative;
       overflow: hidden;
+      border-radius: 4px;
       background-size: cover;
       background-position: center;
       cursor: pointer;
@@ -6401,6 +6414,20 @@
       setTimeout(() => {
         this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 300);
+    });
+
+    // ── IMAGE FADE-IN ON LOAD ── every lazy <img> starts at opacity:0 (see
+    // the img[loading="lazy"] rule near the top of the stylesheet) and
+    // fades in the moment it actually finishes loading, regardless of
+    // whether/when a wrapper's own scroll-entrance animation also reveals
+    // it — otherwise the bitmap itself just snaps in unanimated once
+    // decoded, independent of any opacity transition on an ancestor.
+    document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+      if (img.complete && img.naturalWidth > 0) {
+        img.classList.add('img-loaded');
+      } else {
+        img.addEventListener('load', () => img.classList.add('img-loaded'), { once: true });
+      }
     });
 
     // ── LAZY VIDEO LOADING ── videos only fetch once their element is
