@@ -230,7 +230,7 @@
     /* ── HERO ── */
     #hero {
       padding: 0 var(--pad-mobile) 32px;
-      min-height: calc(100vh - var(--nav-height));
+      min-height: calc(100svh - var(--nav-height));
       display: flex;
       flex-direction: row;
       align-items: flex-end;
@@ -731,7 +731,7 @@
       width: 100%;
       margin-top: 0;
       margin-bottom: 200px;
-      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px);
+      height: calc(100svh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px);
       overflow: hidden;
     }
 
@@ -749,7 +749,7 @@
         width: auto;
         margin-top: 0;
         margin-bottom: 48px;
-        height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 32px);
+        height: calc(100svh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 32px);
       }
       .service-thumb-hero img { width: auto; height: 100%; }
     }
@@ -759,7 +759,7 @@
     /* ── L3: PROJECT PAGE ── same priority flip as above. */
     .project-thumb-hero {
       width: 100%;
-      height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px);
+      height: calc(100svh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px);
       overflow: hidden;
     }
 
@@ -842,7 +842,7 @@
       .project-thumb-hero {
         display: inline-block;
         width: auto;
-        height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 32px);
+        height: calc(100svh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 32px);
       }
       .project-thumb-hero img,
       .project-thumb-hero video,
@@ -863,7 +863,7 @@
     }
     @media (max-width: 1099px) {
       [id^="view-article-"] .project-thumb-hero {
-        height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px - 34px);
+        height: calc(100svh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 120px - 34px);
       }
     }
     @media (min-width: 1100px) {
@@ -1199,7 +1199,7 @@
         justify-self: start;
         display: inline-block;
         width: auto;
-        height: calc(100vh - var(--nav-height) - var(--section-header-height) - 12px - 32px);
+        height: calc(100svh - var(--nav-height) - var(--section-header-height) - 12px - 32px);
       }
       .about-l2-content .about-image img,
       .about-l2-content .about-image video {
@@ -1652,7 +1652,7 @@
       display: block;
       width: 100%;
       height: auto;
-      max-height: 90vh;
+      max-height: 90svh;
       object-fit: contain;
       border-radius: 4px;
     }
@@ -1766,7 +1766,7 @@
     }
 
     /* ── L2 VIEWS ── */
-    .l2-view { padding-top: var(--nav-height); min-height: 100vh; }
+    .l2-view { padding-top: var(--nav-height); min-height: 100svh; }
 
     .l2-section-header {
       position: sticky;
@@ -1989,7 +1989,7 @@
         padding-right: 32px;
       }
 
-      #hero { padding: 0 32px 32px; min-height: calc(100vh - var(--nav-height)); align-items: flex-end; }
+      #hero { padding: 0 32px 32px; min-height: calc(100svh - var(--nav-height)); align-items: flex-end; }
 
       #offer { padding: 12px 32px 80px; }
 
@@ -2033,7 +2033,7 @@
       #hero { padding-bottom: var(--pad-mobile); min-height: 0; }
       .hero-image {
         width: calc(100% * 10 / 12);
-        height: calc(100vh - var(--nav-height) - var(--pad-mobile));
+        height: calc(100svh - var(--nav-height) - var(--pad-mobile));
         overflow: hidden;
       }
       .hero-image img,
@@ -2412,7 +2412,7 @@
          padding (see FOOTER comment above) instead of the flat 64px
          every other footer now uses — reduced 200px across the board
          (both the floor and the scaling term) since it was too tall. */
-      #contact { padding-top: max(40px, calc(100vh - 440px)); }
+      #contact { padding-top: max(40px, calc(100svh - 440px)); }
     }
 
     #work .section-body { padding-bottom: 32px; }
@@ -6814,10 +6814,16 @@
     gsap.ticker.lagSmoothing(0);
 
     // Mobile browsers resize the layout viewport (window.innerHeight) as
-    // their address bar / bottom bar show or hide while scrolling. Lenis's
-    // default autoResize treats that like a real reflow and recalculates
-    // scroll limits mid-scroll, which snaps the in-progress smooth scroll
-    // to an abrupt stop the instant the bars finish animating. A width
+    // their address bar / bottom bar show or hide while scrolling. This
+    // used to also shift actual page layout via 100vh-based CSS — every
+    // vh in the stylesheet is now svh (small viewport height), which is
+    // pinned to the toolbars-visible size and never changes as they
+    // animate, so that reflow no longer happens at all. This debounce is
+    // now just a secondary safety net for Lenis's own internal scroll-
+    // limit cache, not the primary defense. Lenis's default autoResize
+    // treats a resize like a real reflow and recalculates scroll limits
+    // mid-scroll, which snaps the in-progress smooth scroll to an abrupt
+    // stop the instant the bars finish animating. A width
     // change (orientation, real layout change) is safe to resize for
     // immediately. A height-only change (toolbar show/hide) is deferred
     // until both the resize events have settled AND nothing is actively
