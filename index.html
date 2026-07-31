@@ -752,13 +752,66 @@
     }
 
     .project-thumb-hero img,
-    .project-thumb-hero video {
+    .project-thumb-hero video,
+    .project-thumb-hero .yt-embed {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       filter: grayscale(20%);
     }
+
+    /* Only .yt-embed needs an explicit ratio — unlike img/video it has no
+       intrinsic size of its own, so on desktop (width:auto below) it would
+       collapse to 0 without one. Scoped here, not on the shared rule above,
+       so every other project's hero photo keeps sizing to its own real
+       aspect ratio on desktop instead of being forced into 16:9. */
+    .project-thumb-hero .yt-embed { aspect-ratio: 16 / 9; }
+
+    /* ── YOUTUBE CLICK-TO-PLAY EMBED (SGA) ── poster image + a custom play
+       button, no autoplay, no native YouTube chrome. iframes can't use
+       object-fit, so the actual player iframe is sized in JS to cover this
+       box (sizeYouTubeCover); .yt-embed-target is a separate empty child
+       the YT.Player API replaces with its iframe — the API replaces
+       whatever element you hand it entirely, so it can't be .yt-embed
+       itself without also wiping out the poster background and play
+       button living on it. */
+    .yt-embed {
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+    .yt-embed-target { position: absolute; inset: 0; }
+    .yt-embed iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border: 0;
+      transform: translate(-50%, -50%);
+    }
+    .yt-embed-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      transition: background 0.2s ease, opacity 0.3s ease;
+    }
+    .yt-embed-play:hover { background: rgba(255, 255, 255, 0.25); }
+    .yt-embed-play svg { width: 26px; height: 26px; display: block; margin-left: 3px; }
+    .yt-embed--playing .yt-embed-play { opacity: 0; pointer-events: none; }
 
     @media (min-width: 1100px) {
       .project-thumb-hero {
@@ -767,7 +820,10 @@
         height: calc(100vh - var(--nav-height) - var(--section-header-height) - var(--l3-header-extra, 0px) - 12px - 32px);
       }
       .project-thumb-hero img,
-      .project-thumb-hero video { width: auto; height: 100%; }
+      .project-thumb-hero video,
+      .project-thumb-hero .yt-embed { width: auto; height: 100%; }
+      .yt-embed-play { width: 88px; height: 88px; }
+      .yt-embed-play svg { width: 32px; height: 32px; }
     }
 
     /* Studio L3 pages only: the desktop col-5 intro (article name) also
@@ -1147,6 +1203,14 @@
       display: block;
       filter: grayscale(100%);
     }
+    /* Only video needs an explicit ratio here — height:auto on an <img>
+       sizes correctly immediately since images have real dimensions from
+       the first paint. A lazy-loaded <video> has none until it activates
+       (see LAZY VIDEO LOADING): with no src, it renders at the browser's
+       default 300x150 placeholder box, then snaps to its real ratio once
+       loaded — a layout shift that pushes everything below it (Studio,
+       footer) and reads as an unprompted jump partway down the page. */
+    .about-image video { aspect-ratio: 16 / 9; }
 
     /* ── FOOTER ──
        Flat 64px top padding everywhere except the homepage footer on
@@ -2576,8 +2640,8 @@
           <div class="about-grid">
             <div></div>
             <div class="about-image fade-left">
-              <video class="about-image-mobile" data-src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
-              <video class="about-image-desktop" data-src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
+              <video class="about-image-mobile" data-src="website-media/media-about/about-video-desktop.mp4" poster="website-media/media-about/about-video-desktop-poster.jpg" autoplay muted loop playsinline></video>
+              <video class="about-image-desktop" data-src="website-media/media-about/about-video-desktop.mp4" poster="website-media/media-about/about-video-desktop-poster.jpg" autoplay muted loop playsinline></video>
             </div>
           </div>
         </div>
@@ -3030,8 +3094,8 @@
       <div class="section-body l2-anim-body">
         <div class="about-l2-content">
           <div class="about-image">
-            <video class="about-image-mobile" data-src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
-            <video class="about-image-desktop" data-src="website-media/media-about/about-video-desktop.mp4" autoplay muted loop playsinline></video>
+            <video class="about-image-mobile" data-src="website-media/media-about/about-video-desktop.mp4" poster="website-media/media-about/about-video-desktop-poster.jpg" autoplay muted loop playsinline></video>
+            <video class="about-image-desktop" data-src="website-media/media-about/about-video-desktop.mp4" poster="website-media/media-about/about-video-desktop-poster.jpg" autoplay muted loop playsinline></video>
           </div>
           <p class="offer-text about-l2-bio">My background spans media production, brand development, campaign strategy, and web design. Through my multidisciplinary approach, combining storytelling, design, and systems thinking, I focus on building meaningful connections that drive impact and consistency across every touchpoint.</p>
           <div class="offer-attribution">
@@ -4169,7 +4233,12 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <video data-src="website-media/media-work/work-sga/work-sga-1.mp4" autoplay muted loop playsinline></video>
+            <div class="yt-embed" data-yt-id="AUFqjTNQaQk" style="background-image: url('website-media/media-work/work-sga/work-sga-1.jpg');">
+              <div class="yt-embed-target"></div>
+              <button type="button" class="yt-embed-play" aria-label="Play video">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
           </div>
         </div>
         <div class="project-detail-grid">
@@ -4180,7 +4249,6 @@
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-7.jpg" alt="SGA" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-8.jpg" alt="SGA" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-9.jpg" alt="SGA" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-10.jpg" alt="SGA" /></div>
         </div>
       </div>
       </div>
@@ -4693,15 +4761,14 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <video data-src="website-media/media-work/work-ugc/work-ugc-3.mp4" autoplay muted loop playsinline></video>
+            <img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-1.jpg" alt="UGC" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img project-detail-video"><video data-src="website-media/media-work/work-ugc/work-ugc-2.mp4" autoplay muted loop playsinline></video></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-2.jpg" alt="UGC" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-3.jpg" alt="UGC" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-4.jpg" alt="UGC" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-5.jpg" alt="UGC" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-6.jpg" alt="UGC" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-7.jpg" alt="UGC" /></div>
         </div>
       </div>
       </div>
@@ -4778,11 +4845,10 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <video data-src="website-media/media-work/work-joy/work-joy-5.mp4" autoplay muted loop playsinline></video>
+            <img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" alt="Portraits of Joy" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" alt="Portraits of Joy" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-2.jpg" alt="Portraits of Joy" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-3.jpg" alt="Portraits of Joy" /></div>
         </div>
@@ -4865,8 +4931,7 @@
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img project-detail-video"><video data-src="website-media/media-work/work-play-date/work-play-date-2.mp4" autoplay muted loop playsinline></video></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-3.jpg" alt="Play Date" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-2.jpg" alt="Play Date" /></div>
         </div>
       </div>
       </div>
@@ -5764,16 +5829,22 @@
     // an overlay (from home or from either L2 list) rather than navigating.
     document.querySelectorAll('.services-list li[data-target]').forEach(item => {
       item.addEventListener('click', () => openL3(item.dataset.target));
+      item.addEventListener('mouseenter', () => prefetchL3Videos(item.dataset.target), { once: true });
+      item.addEventListener('touchstart', () => prefetchL3Videos(item.dataset.target), { once: true, passive: true });
     });
 
     // ── WORK ITEMS → L3 PROJECT PAGES ──
     document.querySelectorAll('.work-thumb[data-target]').forEach(item => {
       item.addEventListener('click', () => openL3(item.dataset.target));
+      item.addEventListener('mouseenter', () => prefetchL3Videos(item.dataset.target), { once: true });
+      item.addEventListener('touchstart', () => prefetchL3Videos(item.dataset.target), { once: true, passive: true });
     });
 
     // ── STUDIO ARTICLES → L3 ARTICLE PAGES ──
     document.querySelectorAll('.blog-card[data-target]').forEach(item => {
       item.addEventListener('click', () => openL3(item.dataset.target));
+      item.addEventListener('mouseenter', () => prefetchL3Videos(item.dataset.target), { once: true });
+      item.addEventListener('touchstart', () => prefetchL3Videos(item.dataset.target), { once: true, passive: true });
     });
 
     // ── PREV/NEXT NAV (L3 pages + L2 bottom nav) ── L3 buttons swap to
@@ -5783,6 +5854,8 @@
         if (btn.closest('.l3-overlay')) openL3(btn.dataset.target);
         else navigateTo(btn.dataset.target);
       });
+      btn.addEventListener('mouseenter', () => prefetchL3Videos(btn.dataset.target), { once: true });
+      btn.addEventListener('touchstart', () => prefetchL3Videos(btn.dataset.target), { once: true, passive: true });
     });
 
     document.querySelectorAll('.offcanvas-section-row[data-target]').forEach(row => {
@@ -6320,7 +6393,19 @@
     // L1/L2/L3 view is mounted in the DOM from the start here, just hidden.
     // Picks a mobile-specific src/poster when present (data-src-mobile /
     // data-poster-mobile) and falls back to the desktop one otherwise.
-    (function () {
+    //
+    // Two prefetch paths feed the same activate():
+    // 1. Scroll-based, for video already mounted in the flow (hero, about) —
+    //    a generous rootMargin starts the fetch a screen or more of scroll
+    //    before the video is actually on screen, weighted toward scrolling
+    //    down since that's the dominant direction on this page.
+    // 2. Intent-based, for video inside L3 overlays (project pages) — those
+    //    sit at display:none until opened, so scroll proximity can't help;
+    //    hovering/touching the thumbnail that opens one starts the fetch
+    //    immediately, well before the click (or the overlay's own slide-up
+    //    transition) actually happens. Wired where thumbnails already get
+    //    their click→openL3 listeners, further down.
+    window.activateVideo = (function () {
       const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
 
       function activate(video) {
@@ -6346,10 +6431,96 @@
           if (entry.isIntersecting) activate(entry.target);
           else deactivate(entry.target);
         });
-      }, { rootMargin: '200px' });
+      }, { rootMargin: '100% 0px 250% 0px' });
 
       document.querySelectorAll('video[data-src]').forEach(v => observer.observe(v));
+
+      return activate;
     })();
+
+    // Prefetches every video inside a not-yet-open L3 overlay — called on
+    // hover/touch-intent below, before openL3 actually reveals it.
+    function prefetchL3Videos(targetId) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      target.querySelectorAll('video[data-src]').forEach(window.activateVideo);
+      if (target.querySelector('.yt-embed[data-yt-id]')) loadYouTubeAPI();
+    }
+
+    // ── YOUTUBE CLICK-TO-PLAY EMBED (SGA) ── no autoplay, no native YouTube
+    // chrome — a custom play button over a poster image, matching every
+    // other project video on the site. The IFrame API script is prefetched
+    // on hover/touch-intent above (same as the mp4 videos), but the actual
+    // video never loads or plays until the button is clicked.
+    let ytApiPromise = null;
+    function loadYouTubeAPI() {
+      if (ytApiPromise) return ytApiPromise;
+      ytApiPromise = new Promise(resolve => {
+        if (window.YT && window.YT.Player) { resolve(window.YT); return; }
+        const prevCallback = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = () => {
+          if (prevCallback) prevCallback();
+          resolve(window.YT);
+        };
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      });
+      return ytApiPromise;
+    }
+
+    // Crops the player iframe to cover its container — iframes can't use
+    // object-fit, so this reproduces the same crop every mp4 gets, given
+    // YouTube always serves a 16:9 frame regardless of the source footage.
+    function sizeYouTubeCover(iframe, container) {
+      const cw = container.clientWidth;
+      const ch = container.clientHeight;
+      const ratio = 16 / 9;
+      let w, h;
+      if (cw / ch > ratio) { w = cw; h = cw / ratio; }
+      else { h = ch; w = ch * ratio; }
+      iframe.style.width = w + 'px';
+      iframe.style.height = h + 'px';
+    }
+
+    document.querySelectorAll('.yt-embed[data-yt-id]').forEach(embed => {
+      const playBtn = embed.querySelector('.yt-embed-play');
+      const target = embed.querySelector('.yt-embed-target');
+      const videoId = embed.dataset.ytId;
+      let player = null;
+
+      playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (player) { player.playVideo(); return; }
+        loadYouTubeAPI().then(YT => {
+          player = new YT.Player(target, {
+            videoId,
+            playerVars: {
+              autoplay: 1, controls: 0, modestbranding: 1, rel: 0,
+              iv_load_policy: 3, fs: 0, disablekb: 1, playsinline: 1
+            },
+            events: {
+              onReady: () => {
+                embed.classList.add('yt-embed--playing');
+                const iframe = player.getIframe();
+                const resize = () => sizeYouTubeCover(iframe, embed);
+                resize();
+                window.addEventListener('resize', resize);
+              }
+            }
+          });
+        });
+      });
+
+      // Once playing, clicking anywhere on the embed toggles play/pause —
+      // same behavior as every native <video> on the site.
+      embed.addEventListener('click', () => {
+        if (!player || typeof player.getPlayerState !== 'function') return;
+        const state = player.getPlayerState();
+        if (state === window.YT.PlayerState.PLAYING) player.pauseVideo();
+        else player.playVideo();
+      });
+    });
 
     // ── SITEWIDE VIDEO CLICK-TO-PAUSE ── no native controls anywhere; a
     // click anywhere on any <video> just toggles play/pause.
