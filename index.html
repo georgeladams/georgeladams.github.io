@@ -6843,6 +6843,16 @@
     let lastViewportWidth = window.innerWidth;
     let heightResizeTimer = null;
     let lastScrollActivity = 0;
+    // A finger can pause mid-drag without lifting — scroll-quietness alone
+    // can't tell that apart from actually being done, and mobile browsers
+    // often throttle scroll-event dispatch during the tail of momentum
+    // deceleration (every 100-200ms, not every frame), so quietness can
+    // read true while the page is still visibly decelerating. Track real
+    // touch presence directly instead of inferring it.
+    let touchActive = false;
+    window.addEventListener('touchstart', () => { touchActive = true; }, { passive: true });
+    window.addEventListener('touchend', () => { touchActive = false; }, { passive: true });
+    window.addEventListener('touchcancel', () => { touchActive = false; }, { passive: true });
     function resizeLenisNow() {
       lenis.resize();
       if (l3Lenis) l3Lenis.resize();
@@ -6850,8 +6860,8 @@
     function scheduleHeightResize() {
       clearTimeout(heightResizeTimer);
       heightResizeTimer = setTimeout(() => {
-        const recentlyScrolled = (performance.now() - lastScrollActivity) < 250;
-        if (recentlyScrolled || lenis.isScrolling || (l3Lenis && l3Lenis.isScrolling)) {
+        const recentlyScrolled = (performance.now() - lastScrollActivity) < 500;
+        if (touchActive || recentlyScrolled || lenis.isScrolling || (l3Lenis && l3Lenis.isScrolling)) {
           scheduleHeightResize();
           return;
         }
