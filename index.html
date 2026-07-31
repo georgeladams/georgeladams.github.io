@@ -768,6 +768,18 @@
        aspect ratio on desktop instead of being forced into 16:9. */
     .project-thumb-hero .yt-embed { aspect-ratio: 16 / 9; }
 
+    /* On mobile/tablet every other project hero is a tall cropped photo —
+       the yt-embed shouldn't get the same tall-crop treatment, or most of
+       the video gets cut off by sizeYouTubeCover() filling that shape.
+       .project-thumb-hero--video (set directly in HTML, on SGA's hero only)
+       scopes this without relying on :has() support. Bounded to
+       max-width:1099px to not fight the desktop rule below, which already
+       sizes correctly (fixed height + auto width = a true 16:9 box, no
+       crop needed there). */
+    @media (max-width: 1099px) {
+      .project-thumb-hero.project-thumb-hero--video { height: auto; }
+    }
+
     /* ── YOUTUBE CLICK-TO-PLAY EMBED (SGA) ── poster image + a custom play
        button, no autoplay, no native YouTube chrome. iframes can't use
        object-fit, so the actual player iframe is sized in JS to cover this
@@ -2491,84 +2503,84 @@
           <p class="section-intro fade-left">Stories, designs and systems that connect real people.</p>
           <div class="work-thumb-grid">
             <div class="work-thumb fade-left" data-target="view-project-ubu">
-              <img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-1.jpg" alt="UBU" />
+              <img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-1.jpg" width="1920" height="1080" alt="UBU" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">UBU</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left" data-target="view-project-amerisewn" style="transition-delay: 0.05s">
-              <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" alt="Amerisewn" />
+              <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" width="1920" height="1080" alt="Amerisewn" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Amerisewn</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left" data-target="view-project-sga" style="transition-delay: 0.10s">
-              <img loading="lazy" src="website-media/media-work/work-sga/work-sga-2.jpg" alt="SGA" />
+              <img loading="lazy" src="website-media/media-work/work-sga/work-sga-2.jpg" width="1920" height="1080" alt="SGA" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">SGA</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left" data-target="view-project-midbloom" style="transition-delay: 0.15s">
-              <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" alt="MIDBLOOM" />
+              <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" width="1914" height="1077" alt="MIDBLOOM" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">MIDBLOOM</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left" data-target="view-project-uri-os" style="transition-delay: 0.20s">
-              <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" alt="URI OS" />
+              <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" width="2462" height="1384" alt="URI OS" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">URI OS</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left work-thumb--extra" data-target="view-project-wireless-exhibit" style="transition-delay: 0.25s">
-              <img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-1.jpg" alt="Wireless Exhibit" />
+              <img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-1.jpg" width="1920" height="1080" alt="Wireless Exhibit" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Wireless Exhibit</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left work-thumb--extra" data-target="view-project-harvard-dd" style="transition-delay: 0.30s">
-              <img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-1.jpg" alt="Harvard DD" />
+              <img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-1.jpg" width="1920" height="1080" alt="Harvard DD" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Harvard DD</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left work-thumb--extra" data-target="view-project-true-luv-apparel" style="transition-delay: 0.35s">
-              <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" alt="True Luv Apparel" />
+              <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" width="1920" height="1080" alt="True Luv Apparel" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">True Luv Apparel</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left work-thumb--extra" data-target="view-project-ugc" style="transition-delay: 0.40s">
-              <img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-1.jpg" alt="UGC" />
+              <img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-1.jpg" width="1920" height="1080" alt="UGC" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">UGC</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left work-thumb--extra" data-target="view-project-portraits-of-joy" style="transition-delay: 0.45s">
-              <img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" alt="Portraits of Joy" />
+              <img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" width="1318" height="741" alt="Portraits of Joy" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Portraits of Joy</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left work-thumb--extra" data-target="view-project-play-date" style="transition-delay: 0.50s">
-              <img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-1.jpg" alt="Play Date" />
+              <img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-1.jpg" width="1195" height="672" alt="Play Date" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Play Date</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
             <div class="work-thumb fade-left work-thumb--extra" data-target="view-project-the-meanies" style="transition-delay: 0.55s">
-              <img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-1.jpg" alt="The Meanies" />
+              <img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-1.jpg" width="1671" height="937" alt="The Meanies" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">The Meanies</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -2666,7 +2678,7 @@
             <div class="blog-cards-grid fade-left-delay">
               <div class="blog-card" data-target="view-article-harvard-gsd">
                 <div class="blog-card-image">
-                  <img loading="lazy" src="website-media/media-studio/studio-gsd/studio-gsd-1.jpg" alt="Exploring Architecture at Harvard's GSD..." onerror="this.style.background='#ccc'" />
+                  <img loading="lazy" src="website-media/media-studio/studio-gsd/studio-gsd-1.jpg" width="1920" height="1080" alt="Exploring Architecture at Harvard's GSD..." onerror="this.style.background='#ccc'" />
                   <div class="work-thumb-overlay">
                     <span class="work-thumb-title">Exploring Architecture at Harvard's GSD...</span>
                     <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -2675,7 +2687,7 @@
               </div>
               <div class="blog-card" data-target="view-article-systems-that-scale">
                 <div class="blog-card-image">
-                  <img loading="lazy" src="website-media/media-studio/studio-wireless/studio-wireless-1.jpg" alt="Designing Systems That Scale" onerror="this.style.background='#ccc'" />
+                  <img loading="lazy" src="website-media/media-studio/studio-wireless/studio-wireless-1.jpg" width="1920" height="1080" alt="Designing Systems That Scale" onerror="this.style.background='#ccc'" />
                   <div class="work-thumb-overlay">
                     <span class="work-thumb-title">Designing Systems That Scale</span>
                     <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -2684,7 +2696,7 @@
               </div>
               <div class="blog-card" data-target="view-article-brand-clarity">
                 <div class="blog-card-image">
-                  <img loading="lazy" src="website-media/media-studio/studio-porto/studio-porto-2.jpg" alt="Brand Clarity in Practice" onerror="this.style.background='#ccc'" />
+                  <img loading="lazy" src="website-media/media-studio/studio-porto/studio-porto-2.jpg" width="1920" height="1080" alt="Brand Clarity in Practice" onerror="this.style.background='#ccc'" />
                   <div class="work-thumb-overlay">
                     <span class="work-thumb-title">Brand Clarity in Practice</span>
                     <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -2693,7 +2705,7 @@
               </div>
               <div class="blog-card" data-target="view-article-creative-gift">
                 <div class="blog-card-image">
-                  <img loading="lazy" src="website-media/media-studio/studio-new-zealand/studio-nz-1.jpg" alt="Notes on Making: Creative Gift" onerror="this.style.background='#ccc'" />
+                  <img loading="lazy" src="website-media/media-studio/studio-new-zealand/studio-nz-1.jpg" width="2000" height="1125" alt="Notes on Making: Creative Gift" onerror="this.style.background='#ccc'" />
                   <div class="work-thumb-overlay">
                     <span class="work-thumb-title">Notes on Making: Creative Gift</span>
                     <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -2736,84 +2748,84 @@
       <div class="section-body l2-anim-body">
         <div class="work-thumb-grid">
           <div class="work-thumb" data-target="view-project-ubu">
-              <img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-1.jpg" alt="UBU" />
+              <img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-1.jpg" width="1920" height="1080" alt="UBU" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">UBU</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-amerisewn">
-              <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" alt="Amerisewn" />
+              <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" width="1920" height="1080" alt="Amerisewn" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Amerisewn</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-sga">
-              <img loading="lazy" src="website-media/media-work/work-sga/work-sga-2.jpg" alt="SGA" />
+              <img loading="lazy" src="website-media/media-work/work-sga/work-sga-2.jpg" width="1920" height="1080" alt="SGA" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">SGA</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-midbloom">
-              <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" alt="MIDBLOOM" />
+              <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" width="1914" height="1077" alt="MIDBLOOM" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">MIDBLOOM</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-uri-os">
-              <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" alt="URI OS" />
+              <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" width="2462" height="1384" alt="URI OS" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">URI OS</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-wireless-exhibit">
-              <img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-1.jpg" alt="Wireless Exhibit" />
+              <img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-1.jpg" width="1920" height="1080" alt="Wireless Exhibit" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Wireless Exhibit</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-harvard-dd">
-              <img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-1.jpg" alt="Harvard DD" />
+              <img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-1.jpg" width="1920" height="1080" alt="Harvard DD" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Harvard DD</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-true-luv-apparel">
-              <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" alt="True Luv Apparel" />
+              <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" width="1920" height="1080" alt="True Luv Apparel" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">True Luv Apparel</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-ugc">
-              <img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-1.jpg" alt="UGC" />
+              <img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-1.jpg" width="1920" height="1080" alt="UGC" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">UGC</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-portraits-of-joy">
-              <img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" alt="Portraits of Joy" />
+              <img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" width="1318" height="741" alt="Portraits of Joy" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Portraits of Joy</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-play-date">
-              <img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-1.jpg" alt="Play Date" />
+              <img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-1.jpg" width="1195" height="672" alt="Play Date" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Play Date</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               </div>
             </div>
           <div class="work-thumb" data-target="view-project-the-meanies">
-              <img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-1.jpg" alt="The Meanies" />
+              <img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-1.jpg" width="1671" height="937" alt="The Meanies" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">The Meanies</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -2959,12 +2971,12 @@
           <div class="trusted-grid">
             <div class="trusted-clients-content trusted-clients-l2-content">
               <div class="trusted-clients-logos">
-                <img loading="lazy" class="trusted-logo" src="website-media/media-about/about-client-logos/logo-amerisewn.jpg" alt="AmeriSewn" />
-                <img loading="lazy" class="trusted-logo" src="website-media/media-about/about-client-logos/logo-uri.jpg" alt="URI" />
-                <img loading="lazy" class="trusted-logo trusted-logo--badge" src="website-media/media-about/about-client-logos/logo-sga.jpg" alt="SGA" />
-                <img loading="lazy" class="trusted-logo" src="website-media/media-about/about-client-logos/logo-garden-time.jpg" alt="Garden Time" />
-                <img loading="lazy" class="trusted-logo" src="website-media/media-about/about-client-logos/logo-strange-outfit.jpg" alt="Strange Outfit" />
-                <img loading="lazy" class="trusted-logo trusted-logo--badge" src="website-media/media-about/about-client-logos/logo_ccdd.jpeg" alt="CCDD" />
+                <img loading="lazy" class="trusted-logo" src="website-media/media-about/about-client-logos/logo-amerisewn.jpg" width="475" height="130" alt="AmeriSewn" />
+                <img loading="lazy" class="trusted-logo" src="website-media/media-about/about-client-logos/logo-uri.jpg" width="1361" height="532" alt="URI" />
+                <img loading="lazy" class="trusted-logo trusted-logo--badge" src="website-media/media-about/about-client-logos/logo-sga.jpg" width="1920" height="1920" alt="SGA" />
+                <img loading="lazy" class="trusted-logo" src="website-media/media-about/about-client-logos/logo-garden-time.jpg" width="1438" height="352" alt="Garden Time" />
+                <img loading="lazy" class="trusted-logo" src="website-media/media-about/about-client-logos/logo-strange-outfit.jpg" width="2197" height="458" alt="Strange Outfit" />
+                <img loading="lazy" class="trusted-logo trusted-logo--badge" src="website-media/media-about/about-client-logos/logo_ccdd.jpeg" width="447" height="447" alt="CCDD" />
               </div>
             </div>
           </div>
@@ -3015,7 +3027,7 @@
           <div class="blog-cards-grid">
             <div class="blog-card" data-target="view-article-harvard-gsd">
               <div class="blog-card-image">
-                <img loading="lazy" src="website-media/media-studio/studio-gsd/studio-gsd-1.jpg" alt="Exploring Architecture at Harvard's GSD..." onerror="this.style.background='#ccc'" />
+                <img loading="lazy" src="website-media/media-studio/studio-gsd/studio-gsd-1.jpg" width="1920" height="1080" alt="Exploring Architecture at Harvard's GSD..." onerror="this.style.background='#ccc'" />
                 <div class="work-thumb-overlay">
                   <span class="work-thumb-title">Exploring Architecture at Harvard's GSD...</span>
                   <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -3024,7 +3036,7 @@
             </div>
             <div class="blog-card" data-target="view-article-systems-that-scale">
               <div class="blog-card-image">
-                <img loading="lazy" src="website-media/media-studio/studio-wireless/studio-wireless-1.jpg" alt="Designing Systems That Scale" onerror="this.style.background='#ccc'" />
+                <img loading="lazy" src="website-media/media-studio/studio-wireless/studio-wireless-1.jpg" width="1920" height="1080" alt="Designing Systems That Scale" onerror="this.style.background='#ccc'" />
                 <div class="work-thumb-overlay">
                   <span class="work-thumb-title">Designing Systems That Scale</span>
                   <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -3033,7 +3045,7 @@
             </div>
             <div class="blog-card" data-target="view-article-brand-clarity">
               <div class="blog-card-image">
-                <img loading="lazy" src="website-media/media-studio/studio-porto/studio-porto-2.jpg" alt="Brand Clarity in Practice" onerror="this.style.background='#ccc'" />
+                <img loading="lazy" src="website-media/media-studio/studio-porto/studio-porto-2.jpg" width="1920" height="1080" alt="Brand Clarity in Practice" onerror="this.style.background='#ccc'" />
                 <div class="work-thumb-overlay">
                   <span class="work-thumb-title">Brand Clarity in Practice</span>
                   <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -3042,7 +3054,7 @@
             </div>
             <div class="blog-card" data-target="view-article-creative-gift">
               <div class="blog-card-image">
-                <img loading="lazy" src="website-media/media-studio/studio-new-zealand/studio-nz-1.jpg" alt="Notes on Making: Creative Gift" onerror="this.style.background='#ccc'" />
+                <img loading="lazy" src="website-media/media-studio/studio-new-zealand/studio-nz-1.jpg" width="2000" height="1125" alt="Notes on Making: Creative Gift" onerror="this.style.background='#ccc'" />
                 <div class="work-thumb-overlay">
                   <span class="work-thumb-title">Notes on Making: Creative Gift</span>
                   <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -3220,7 +3232,7 @@
       <div class="section-body l2-anim-body">
         <div class="service-thumb-wrap">
           <div class="service-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-sga/work-sga-3.jpg" alt="Creative Direction" />
+            <img loading="lazy" src="website-media/media-work/work-sga/work-sga-3.jpg" width="1920" height="1080" alt="Creative Direction" />
           </div>
         </div>
         <div class="service-offer-section">
@@ -3322,7 +3334,7 @@
         <div class="case-study-wrap">
           <div class="case-study-grid">
             <div class="work-thumb case-study-thumb" data-target="view-project-sga">
-              <img loading="lazy" src="website-media/media-work/work-sga/work-sga-3.jpg" alt="SGA" />
+              <img loading="lazy" src="website-media/media-work/work-sga/work-sga-3.jpg" width="1920" height="1080" alt="SGA" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">SGA</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -3387,7 +3399,7 @@
       <div class="section-body l2-anim-body">
         <div class="service-thumb-wrap">
           <div class="service-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" alt="Brand Development" />
+            <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" width="1914" height="1077" alt="Brand Development" />
           </div>
         </div>
         <div class="service-offer-section">
@@ -3489,7 +3501,7 @@
         <div class="case-study-wrap">
           <div class="case-study-grid">
             <div class="work-thumb case-study-thumb" data-target="view-project-midbloom">
-              <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" alt="MIDBLOOM" />
+              <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" width="1914" height="1077" alt="MIDBLOOM" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">MIDBLOOM</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -3558,7 +3570,7 @@
       <div class="section-body l2-anim-body">
         <div class="service-thumb-wrap">
           <div class="service-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" alt="Web Design" />
+            <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" width="2462" height="1384" alt="Web Design" />
           </div>
         </div>
         <div class="service-offer-section">
@@ -3660,7 +3672,7 @@
         <div class="case-study-wrap">
           <div class="case-study-grid">
             <div class="work-thumb case-study-thumb" data-target="view-project-uri-os">
-              <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" alt="URI OS" />
+              <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" width="2462" height="1384" alt="URI OS" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">URI OS</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -3729,7 +3741,7 @@
       <div class="section-body l2-anim-body">
         <div class="service-thumb-wrap">
           <div class="service-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" alt="Content Production" />
+            <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" width="1920" height="1080" alt="Content Production" />
           </div>
         </div>
         <div class="service-offer-section">
@@ -3831,7 +3843,7 @@
         <div class="case-study-wrap">
           <div class="case-study-grid">
             <div class="work-thumb case-study-thumb" data-target="view-project-true-luv-apparel">
-              <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" alt="True Luv Apparel" />
+              <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" width="1920" height="1080" alt="True Luv Apparel" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">True Luv Apparel</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -3900,7 +3912,7 @@
       <div class="section-body l2-anim-body">
         <div class="service-thumb-wrap">
           <div class="service-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" alt="Marketing Systems" />
+            <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" width="1920" height="1080" alt="Marketing Systems" />
           </div>
         </div>
         <div class="service-offer-section">
@@ -4002,7 +4014,7 @@
         <div class="case-study-wrap">
           <div class="case-study-grid">
             <div class="work-thumb case-study-thumb" data-target="view-project-amerisewn">
-              <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" alt="Amerisewn" />
+              <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" width="1920" height="1080" alt="Amerisewn" />
               <div class="work-thumb-overlay">
                 <span class="work-thumb-title">Amerisewn</span>
                 <span class="work-thumb-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="1"/><polyline points="9,18 18,18 18,9" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -4066,18 +4078,18 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-1.jpg" alt="UBU" />
+            <img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-1.jpg" width="1920" height="1080" alt="UBU" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-2.jpg" alt="UBU" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-3.jpg" alt="UBU" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-4.jpg" alt="UBU" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-5.jpg" alt="UBU" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-6.jpg" alt="UBU" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-7.jpg" alt="UBU" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-8.jpg" alt="UBU" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-9.jpg" alt="UBU" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-2.jpg" width="1920" height="1080" alt="UBU" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-3.jpg" width="1920" height="1080" alt="UBU" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-4.jpg" width="1920" height="1080" alt="UBU" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-5.jpg" width="1920" height="1080" alt="UBU" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-6.jpg" width="2048" height="1152" alt="UBU" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-7.jpg" width="2048" height="1152" alt="UBU" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-8.jpg" width="2048" height="1152" alt="UBU" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ubu/work-ubu-9.jpg" width="2048" height="1152" alt="UBU" /></div>
         </div>
       </div>
       </div>
@@ -4150,14 +4162,14 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" alt="Amerisewn" />
+            <img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-1.jpg" width="1920" height="1080" alt="Amerisewn" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-2.jpg" alt="Amerisewn" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-3.jpg" alt="Amerisewn" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-4.jpg" alt="Amerisewn" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-5.jpg" alt="Amerisewn" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-2.jpg" width="1440" height="810" alt="Amerisewn" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-3.jpg" width="1440" height="810" alt="Amerisewn" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-4.jpg" width="1440" height="810" alt="Amerisewn" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-amerisewn/work-amerisewn-5.jpg" width="1440" height="810" alt="Amerisewn" /></div>
         </div>
       </div>
       </div>
@@ -4233,7 +4245,7 @@
       </div>
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
-          <div class="project-thumb-hero">
+          <div class="project-thumb-hero project-thumb-hero--video">
             <div class="yt-embed" data-yt-id="AUFqjTNQaQk" style="background-image: url('https://img.youtube.com/vi/AUFqjTNQaQk/hqdefault.jpg');">
               <div class="yt-embed-target"></div>
               <button type="button" class="yt-embed-play" aria-label="Play video">
@@ -4243,14 +4255,14 @@
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-1.jpg" alt="SGA" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-3.jpg" alt="SGA" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-4.jpg" alt="SGA" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-5.jpg" alt="SGA" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-6.jpg" alt="SGA" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-7.jpg" alt="SGA" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-8.jpg" alt="SGA" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-9.jpg" alt="SGA" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-1.jpg" width="1920" height="1080" alt="SGA" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-3.jpg" width="1920" height="1080" alt="SGA" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-4.jpg" width="1440" height="810" alt="SGA" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-5.jpg" width="1440" height="810" alt="SGA" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-6.jpg" width="1440" height="810" alt="SGA" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-7.jpg" width="1440" height="810" alt="SGA" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-8.jpg" width="1440" height="810" alt="SGA" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-9.jpg" width="1920" height="1080" alt="SGA" /></div>
         </div>
       </div>
       </div>
@@ -4327,19 +4339,19 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" alt="MIDBLOOM" />
+            <img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-1.jpg" width="1914" height="1077" alt="MIDBLOOM" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-2.jpg" alt="MIDBLOOM" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-3.jpg" alt="MIDBLOOM" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-4.jpg" alt="MIDBLOOM" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-5.jpg" alt="MIDBLOOM" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-6.jpg" alt="MIDBLOOM" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-7.jpg" alt="MIDBLOOM" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-8.jpg" alt="MIDBLOOM" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-9.jpg" alt="MIDBLOOM" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-10.jpg" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-2.jpg" width="1920" height="1080" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-3.jpg" width="1914" height="1077" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-4.jpg" width="1920" height="1080" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-5.jpg" width="1914" height="1077" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-6.jpg" width="1914" height="1077" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-7.jpg" width="1914" height="1077" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-8.jpg" width="1914" height="1077" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-9.jpg" width="1914" height="1077" alt="MIDBLOOM" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-midbloom/work-midbloom-10.jpg" width="1914" height="1077" alt="MIDBLOOM" /></div>
         </div>
       </div>
       </div>
@@ -4416,17 +4428,17 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" alt="URI OS" />
+            <img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-1.jpg" width="2462" height="1384" alt="URI OS" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-2.jpg" alt="URI OS" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-3.jpg" alt="URI OS" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-4.jpg" alt="URI OS" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-5.jpg" alt="URI OS" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-6.jpg" alt="URI OS" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-7.jpg" alt="URI OS" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-8.jpg" alt="URI OS" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-2.jpg" width="1231" height="692" alt="URI OS" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-3.jpg" width="1231" height="692" alt="URI OS" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-4.jpg" width="1231" height="692" alt="URI OS" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-5.jpg" width="1231" height="692" alt="URI OS" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-6.jpg" width="1231" height="692" alt="URI OS" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-7.jpg" width="1231" height="692" alt="URI OS" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-uri-os/work-uri-os-8.jpg" width="1231" height="692" alt="URI OS" /></div>
         </div>
       </div>
       </div>
@@ -4503,13 +4515,13 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-1.jpg" alt="Wireless Exhibit" />
+            <img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-1.jpg" width="1920" height="1080" alt="Wireless Exhibit" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-2.jpg" alt="Wireless Exhibit" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-3.jpg" alt="Wireless Exhibit" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-4.jpg" alt="Wireless Exhibit" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-2.jpg" width="1920" height="1080" alt="Wireless Exhibit" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-3.jpg" width="1920" height="1080" alt="Wireless Exhibit" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-wireless-exhibit/work-wireless-exhibit-4.jpg" width="1920" height="1080" alt="Wireless Exhibit" /></div>
         </div>
       </div>
       </div>
@@ -4586,20 +4598,20 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-1.jpg" alt="Harvard DD" />
+            <img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-1.jpg" width="1920" height="1080" alt="Harvard DD" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-2.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-3.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-4.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-5.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-6.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-7.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-8.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-9.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-10.jpg" alt="Harvard DD" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-11.jpg" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-2.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-3.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-4.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-5.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-6.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-7.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-8.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-9.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-10.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-gsd/work-gsd-11.jpg" width="1920" height="1080" alt="Harvard DD" /></div>
         </div>
       </div>
       </div>
@@ -4676,17 +4688,17 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" alt="True Luv Apparel" />
+            <img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-1.jpg" width="1920" height="1080" alt="True Luv Apparel" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-2.jpg" alt="True Luv Apparel" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-3.jpg" alt="True Luv Apparel" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-4.jpg" alt="True Luv Apparel" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-5.jpg" alt="True Luv Apparel" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-6.jpg" alt="True Luv Apparel" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-7.jpg" alt="True Luv Apparel" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-8.jpg" alt="True Luv Apparel" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-2.jpg" width="1920" height="1080" alt="True Luv Apparel" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-3.jpg" width="1920" height="1080" alt="True Luv Apparel" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-4.jpg" width="1920" height="1080" alt="True Luv Apparel" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-5.jpg" width="1384" height="779" alt="True Luv Apparel" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-6.jpg" width="1384" height="779" alt="True Luv Apparel" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-7.jpg" width="1384" height="779" alt="True Luv Apparel" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-true-luv-apparel/work-true-luv-apparel-8.jpg" width="1384" height="779" alt="True Luv Apparel" /></div>
         </div>
       </div>
       </div>
@@ -4763,14 +4775,14 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-1.jpg" alt="UGC" />
+            <img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-1.jpg" width="1920" height="1080" alt="UGC" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-2.jpg" alt="UGC" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-3.jpg" alt="UGC" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-4.jpg" alt="UGC" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-5.jpg" alt="UGC" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-2.jpg" width="1920" height="1080" alt="UGC" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-3.jpg" width="1920" height="1080" alt="UGC" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-4.jpg" width="1920" height="1080" alt="UGC" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-ugc/work-ugc-5.jpg" width="1647" height="926" alt="UGC" /></div>
         </div>
       </div>
       </div>
@@ -4847,12 +4859,12 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" alt="Portraits of Joy" />
+            <img loading="lazy" src="website-media/media-work/work-joy/work-joy-1.jpg" width="1318" height="741" alt="Portraits of Joy" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-2.jpg" alt="Portraits of Joy" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-3.jpg" alt="Portraits of Joy" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-2.jpg" width="1920" height="1080" alt="Portraits of Joy" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-joy/work-joy-3.jpg" width="1920" height="1080" alt="Portraits of Joy" /></div>
         </div>
       </div>
       </div>
@@ -4929,11 +4941,11 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-1.jpg" alt="Play Date" />
+            <img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-1.jpg" width="1195" height="672" alt="Play Date" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-2.jpg" alt="Play Date" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-play-date/work-play-date-2.jpg" width="1170" height="658" alt="Play Date" /></div>
         </div>
       </div>
       </div>
@@ -5010,14 +5022,14 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-1.jpg" alt="The Meanies" />
+            <img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-1.jpg" width="1671" height="937" alt="The Meanies" />
           </div>
         </div>
         <div class="project-detail-grid">
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-2.jpg" alt="The Meanies" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-3.jpg" alt="The Meanies" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-4.jpg" alt="The Meanies" /></div>
-          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-5.jpg" alt="The Meanies" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-2.jpg" width="1671" height="937" alt="The Meanies" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-3.jpg" width="1671" height="937" alt="The Meanies" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-4.jpg" width="1671" height="937" alt="The Meanies" /></div>
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-the-meanies/work-the-meanies-5.jpg" width="1671" height="937" alt="The Meanies" /></div>
         </div>
       </div>
       </div>
@@ -5093,7 +5105,7 @@
         <p class="l3-article-intro-mobile">Exploring Architecture at Harvard's GSD</p>
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-studio/studio-gsd/studio-gsd-1.jpg" alt="Exploring Architecture at Harvard's GSD" />
+            <img loading="lazy" src="website-media/media-studio/studio-gsd/studio-gsd-1.jpg" width="1920" height="1080" alt="Exploring Architecture at Harvard's GSD" />
           </div>
         </div>
       </div>
@@ -5132,7 +5144,7 @@
         <p class="l3-article-intro-mobile">Designing Systems That Scale</p>
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-studio/studio-wireless/studio-wireless-1.jpg" alt="Designing Systems That Scale" />
+            <img loading="lazy" src="website-media/media-studio/studio-wireless/studio-wireless-1.jpg" width="1920" height="1080" alt="Designing Systems That Scale" />
           </div>
         </div>
       </div>
@@ -5175,7 +5187,7 @@
         <p class="l3-article-intro-mobile">Brand Clarity in Practice</p>
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-studio/studio-porto/studio-porto-2.jpg" alt="Brand Clarity in Practice" />
+            <img loading="lazy" src="website-media/media-studio/studio-porto/studio-porto-2.jpg" width="1920" height="1080" alt="Brand Clarity in Practice" />
           </div>
         </div>
       </div>
@@ -5218,7 +5230,7 @@
         <p class="l3-article-intro-mobile">Notes on Making: Creative Gift</p>
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <img loading="lazy" src="website-media/media-studio/studio-new-zealand/studio-nz-1.jpg" alt="Notes on Making: Creative Gift" />
+            <img loading="lazy" src="website-media/media-studio/studio-new-zealand/studio-nz-1.jpg" width="2000" height="1125" alt="Notes on Making: Creative Gift" />
           </div>
         </div>
       </div>
