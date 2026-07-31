@@ -5619,7 +5619,13 @@
         target.classList.add('l3-open');
         target.scrollTop = 0;
         syncL3HeaderHeight(target);
-        if (typeof Lenis !== 'undefined') {
+        // Same mobile-toolbar reasoning as the main lenis instance (see
+        // its setup further down) — no smoothing on mobile means nothing
+        // for a toolbar transition to interrupt. l3Lenis was already
+        // designed to be nullable (recreated per open/close cycle), so
+        // every place that reads it already guards correctly with no
+        // further changes needed.
+        if (typeof Lenis !== 'undefined' && !isMobileToolbarDevice) {
           l3Lenis = new Lenis({
             wrapper: target,
             content: target.firstElementChild,
@@ -6799,88 +6805,88 @@
     // real layout changes (orientation) still refresh normally.
     ScrollTrigger.config({ ignoreMobileResize: true });
 
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      autoResize: false,
-    });
+    // Smooth scroll is a real-Lenis, mobile only doesn't get it. Mobile
+    // Chrome's toolbar hide/show can abruptly interrupt an in-progress
+    // scroll — the whole chain of previous fixes for that (svh, resize-
+    // debounce, touch tracking) all existed to protect Lenis specifically
+    // (its resize/limit-tracking is what gets caught out mid-transition).
+    // Since Lenis doesn't even drive native touch scrolling on mobile in
+    // the first place (syncTouch isn't enabled — it only observes), the
+    // simplest and most reliable fix is to not run it there at all: plain
+    // native scrolling has no equivalent JS-side state to get out of sync,
+    // so there's nothing for a toolbar transition to interrupt. Desktop
+    // (mouse/trackpad, no dynamic toolbar) keeps the smooth-scroll feel
+    // unchanged. Every lenis reference elsewhere in this script already
+    // guards for it being absent (typeof lenis !== 'undefined', or l3Lenis's
+    // existing null-checks) — this variable is deliberately left
+    // uninitialized (not null) on mobile so those checks keep working
+    // exactly as before.
+    const isMobileToolbarDevice = window.matchMedia('(max-width: 767px)').matches;
+    let lenis;
+    if (!isMobileToolbarDevice) {
+      lenis = new Lenis({
+        duration: 1.4,
+        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        autoResize: false,
+      });
 
-    // Keep ScrollTrigger in sync with Lenis
-    lenis.on('scroll', ScrollTrigger.update);
-    // Lenis defaults to native (unsmoothed) touch scrolling — syncTouch
-    // isn't enabled here — so it only *observes* a finger-driven scroll
-    // rather than actively animating it. That means lenis.isScrolling
-    // reflects only Lenis-initiated glides (like scrollHomeToBottom), not
-    // an ordinary in-progress touch scroll — the resize debounce below
-    // needs to know about both, so track real scroll-position activity
-    // directly instead of relying on isScrolling alone.
-    lenis.on('scroll', () => { lastScrollActivity = performance.now(); });
+      // Keep ScrollTrigger in sync with Lenis
+      lenis.on('scroll', ScrollTrigger.update);
+    }
     gsap.ticker.add(time => {
-      lenis.raf(time * 1000);
+      if (lenis) lenis.raf(time * 1000);
       if (l3Lenis) l3Lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
 
-    // Mobile browsers resize the layout viewport (window.innerHeight) as
-    // their address bar / bottom bar show or hide while scrolling. This
-    // used to also shift actual page layout via 100vh-based CSS — every
-    // vh in the stylesheet is now svh (small viewport height), which is
-    // pinned to the toolbars-visible size and never changes as they
-    // animate, so that reflow no longer happens at all. This debounce is
-    // now just a secondary safety net for Lenis's own internal scroll-
-    // limit cache, not the primary defense. Lenis's default autoResize
-    // treats a resize like a real reflow and recalculates scroll limits
-    // mid-scroll, which snaps the in-progress smooth scroll to an abrupt
-    // stop the instant the bars finish animating. A width
-    // change (orientation, real layout change) is safe to resize for
-    // immediately. A height-only change (toolbar show/hide) is deferred
-    // until both the resize events have settled AND nothing is actively
-    // scrolling — resizing mid-momentum is exactly what produces the
-    // abrupt stop, but skipping it forever (the old fix) left Lenis's
-    // limit stale, understating how far down the page actually goes once
-    // a toolbar collapses and undershooting on scroll-to-bottom.
-    let lastViewportWidth = window.innerWidth;
-    let heightResizeTimer = null;
+    // Everything below exists solely to protect lenis's own resize/limit
+    // tracking from mobile toolbar transitions — moot with no lenis
+    // instance to protect on mobile, so it's skipped there entirely
+    // rather than left running as dead code.
     let lastScrollActivity = 0;
-    // A finger can pause mid-drag without lifting — scroll-quietness alone
-    // can't tell that apart from actually being done, and mobile browsers
-    // often throttle scroll-event dispatch during the tail of momentum
-    // deceleration (every 100-200ms, not every frame), so quietness can
-    // read true while the page is still visibly decelerating. Track real
-    // touch presence directly instead of inferring it.
-    let touchActive = false;
-    window.addEventListener('touchstart', () => { touchActive = true; }, { passive: true });
-    window.addEventListener('touchend', () => { touchActive = false; }, { passive: true });
-    window.addEventListener('touchcancel', () => { touchActive = false; }, { passive: true });
-    function resizeLenisNow() {
-      lenis.resize();
-      if (l3Lenis) l3Lenis.resize();
-    }
-    function scheduleHeightResize() {
-      clearTimeout(heightResizeTimer);
-      heightResizeTimer = setTimeout(() => {
-        const recentlyScrolled = (performance.now() - lastScrollActivity) < 500;
-        if (touchActive || recentlyScrolled || lenis.isScrolling || (l3Lenis && l3Lenis.isScrolling)) {
-          scheduleHeightResize();
+    if (lenis) {
+      // Lenis defaults to native (unsmoothed) touch scrolling — syncTouch
+      // isn't enabled here — so it only *observes* a finger-driven scroll
+      // rather than actively animating it. That means lenis.isScrolling
+      // reflects only Lenis-initiated glides (like scrollHomeToBottom), not
+      // an ordinary in-progress touch scroll — the resize debounce below
+      // needs to know about both, so track real scroll-position activity
+      // directly instead of relying on isScrolling alone.
+      lenis.on('scroll', () => { lastScrollActivity = performance.now(); });
+
+      let lastViewportWidth = window.innerWidth;
+      let heightResizeTimer = null;
+      let touchActive = false;
+      window.addEventListener('touchstart', () => { touchActive = true; }, { passive: true });
+      window.addEventListener('touchend', () => { touchActive = false; }, { passive: true });
+      window.addEventListener('touchcancel', () => { touchActive = false; }, { passive: true });
+      const resizeLenisNow = () => {
+        lenis.resize();
+        if (l3Lenis) l3Lenis.resize();
+      };
+      const scheduleHeightResize = () => {
+        clearTimeout(heightResizeTimer);
+        heightResizeTimer = setTimeout(() => {
+          const recentlyScrolled = (performance.now() - lastScrollActivity) < 500;
+          if (touchActive || recentlyScrolled || lenis.isScrolling || (l3Lenis && l3Lenis.isScrolling)) {
+            scheduleHeightResize();
+            return;
+          }
+          resizeLenisNow();
+        }, 220);
+      };
+      window.addEventListener('resize', () => {
+        if (window.innerWidth !== lastViewportWidth) {
+          lastViewportWidth = window.innerWidth;
+          resizeLenisNow();
           return;
         }
-        resizeLenisNow();
-      }, 220);
-    }
-    window.addEventListener('resize', () => {
-      if (window.innerWidth !== lastViewportWidth) {
-        lastViewportWidth = window.innerWidth;
-        resizeLenisNow();
-        return;
+        scheduleHeightResize();
+      }, { passive: true });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', scheduleHeightResize, { passive: true });
       }
-      scheduleHeightResize();
-    }, { passive: true });
-    // visualViewport fires more reliably than window 'resize' for pure
-    // toolbar show/hide on some mobile browsers — listen to both; the
-    // debounce above coalesces duplicate firings.
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', scheduleHeightResize, { passive: true });
     }
 
     // ── IMAGE SCALE ON SCROLL ──
@@ -7285,7 +7291,12 @@
       }
 
       stickyUpdate = update;
-      lenis.on('scroll', update);
+      // This feature is mobile-only (update() no-ops on desktop), which is
+      // exactly where lenis is now absent — native scroll is the only
+      // listener available there, and works just as well since there's no
+      // Lenis-driven transform to stay in sync with in the first place.
+      if (lenis) lenis.on('scroll', update);
+      else window.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', update, { passive: true });
       update();
     })();
