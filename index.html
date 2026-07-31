@@ -5629,6 +5629,7 @@
             autoResize: false,
           });
           l3Lenis.on('scroll', ScrollTrigger.update);
+          l3Lenis.on('scroll', () => { lastScrollActivity = performance.now(); });
         }
         if (typeof initImageScrollEffects === 'function') initImageScrollEffects(target);
         if (typeof initProjectDetailGridScrollEffects === 'function') initProjectDetailGridScrollEffects(target);
@@ -6807,6 +6808,14 @@
 
     // Keep ScrollTrigger in sync with Lenis
     lenis.on('scroll', ScrollTrigger.update);
+    // Lenis defaults to native (unsmoothed) touch scrolling — syncTouch
+    // isn't enabled here — so it only *observes* a finger-driven scroll
+    // rather than actively animating it. That means lenis.isScrolling
+    // reflects only Lenis-initiated glides (like scrollHomeToBottom), not
+    // an ordinary in-progress touch scroll — the resize debounce below
+    // needs to know about both, so track real scroll-position activity
+    // directly instead of relying on isScrolling alone.
+    lenis.on('scroll', () => { lastScrollActivity = performance.now(); });
     gsap.ticker.add(time => {
       lenis.raf(time * 1000);
       if (l3Lenis) l3Lenis.raf(time * 1000);
@@ -6833,6 +6842,7 @@
     // a toolbar collapses and undershooting on scroll-to-bottom.
     let lastViewportWidth = window.innerWidth;
     let heightResizeTimer = null;
+    let lastScrollActivity = 0;
     function resizeLenisNow() {
       lenis.resize();
       if (l3Lenis) l3Lenis.resize();
@@ -6840,7 +6850,8 @@
     function scheduleHeightResize() {
       clearTimeout(heightResizeTimer);
       heightResizeTimer = setTimeout(() => {
-        if (lenis.isScrolling || (l3Lenis && l3Lenis.isScrolling)) {
+        const recentlyScrolled = (performance.now() - lastScrollActivity) < 250;
+        if (recentlyScrolled || lenis.isScrolling || (l3Lenis && l3Lenis.isScrolling)) {
           scheduleHeightResize();
           return;
         }
