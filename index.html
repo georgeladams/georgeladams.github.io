@@ -1123,6 +1123,7 @@
     .blog-card-image img {
       width: 100%;
       height: auto;
+      aspect-ratio: 16 / 9;
       display: block;
     }
 
@@ -4233,7 +4234,7 @@
       <div class="section-body l2-anim-body">
         <div class="project-thumb-wrap">
           <div class="project-thumb-hero">
-            <div class="yt-embed" data-yt-id="AUFqjTNQaQk" style="background-image: url('website-media/media-work/work-sga/work-sga-1.jpg');">
+            <div class="yt-embed" data-yt-id="AUFqjTNQaQk" style="background-image: url('https://img.youtube.com/vi/AUFqjTNQaQk/hqdefault.jpg');">
               <div class="yt-embed-target"></div>
               <button type="button" class="yt-embed-play" aria-label="Play video">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -4242,6 +4243,7 @@
           </div>
         </div>
         <div class="project-detail-grid">
+          <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-1.jpg" alt="SGA" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-3.jpg" alt="SGA" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-4.jpg" alt="SGA" /></div>
           <div class="project-detail-img"><img loading="lazy" src="website-media/media-work/work-sga/work-sga-5.jpg" alt="SGA" /></div>
@@ -6087,7 +6089,12 @@
           lenis.resize();
           const trueMax = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
           if (trueMax - window.scrollY > 4) {
-            lenis.scrollTo(trueMax, { immediate: true });
+            // A short smooth glide, not an instant snap — this only
+            // fires at all when something (a still-lazy-loading image,
+            // a late web font swap) shifted the page height out from
+            // under the first glide, so it should read as a continuation
+            // of the same motion, not a separate abrupt correction.
+            lenis.scrollTo(trueMax, { immediate: false, duration: 0.5, easing: t => 1 - Math.pow(1 - t, 3) });
           }
           updateMenuBtn();
         },
@@ -6523,10 +6530,12 @@
     });
 
     // ── SITEWIDE VIDEO CLICK-TO-PAUSE ── no native controls anywhere; a
-    // click anywhere on any <video> just toggles play/pause.
+    // click anywhere on any <video> just toggles play/pause. Excludes the
+    // homepage hero specifically — it's pure ambient background motion,
+    // not a piece of content someone would want to stop.
     document.addEventListener('click', e => {
       const video = e.target.closest('video');
-      if (!video) return;
+      if (!video || video.closest('#hero')) return;
       if (video.paused) video.play(); else video.pause();
     });
 
